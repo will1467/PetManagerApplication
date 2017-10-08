@@ -9,4 +9,12 @@ public class Pet {
         _name = petName;
         _breed = petBreed;
     }
+
+    public String GetName(){
+        return _name;
+    }
+
+    public String GetBreed(){
+        return _breed;
+    }
 }

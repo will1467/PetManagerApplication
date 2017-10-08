@@ -15,23 +15,28 @@
         android:id="@+id/petNameTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name" />
+        android:text="Name"
+        android:labelFor="@+id/petName"/>
 
     <EditText
         android:id="@+id/petName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="text"
-        android:windowSoftInputMode="adjustResize"
-        android:selectAllOnFocus="true" />
+        android:inputType="textPersonName"
+        android:text=""
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
 
     <EditText
         android:id="@+id/petBreed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:text=""
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
 
     <Button
         android:id="@+id/submitButton"
