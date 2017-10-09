@@ -6,4 +6,59 @@
     android:layout_height="match_parent"
     tools:context="com.example.williamrussa3.petmanagerapplication.PetActivity">
 
+    <TableLayout
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/pet_feed"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="fitStart"
+                android:paddingTop="50dp"
+                app:srcCompat="@drawable/pet_feeding" />
+
+            <ImageButton
+                android:id="@+id/pet_walk"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="fitEnd"
+                android:paddingBottom="50dp"
+                app:srcCompat="@drawable/pet_feeding" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageButton
+                android:id="@+id/expenses_log"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/expenses_log"
+                android:scaleType="fitStart"
+                android:paddingTop="50dp"
+                tools:layout_width="match_parent" />
+
+            <ImageButton
+                android:id="@+id/food_calculator"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="fitEnd"
+                android:paddingBottom="40dp"
+                app:srcCompat="@drawable/calculator" />
+        </TableRow>
+
+    </TableLayout>
 </android.support.constraint.ConstraintLayout>

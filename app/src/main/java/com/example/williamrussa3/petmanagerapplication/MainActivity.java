@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,6 +30,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void CreatePetIcon(Pet newPet) {
+    private void CreatePetIcon(final Pet newPet) {
         LinearLayout linearLayout =  (LinearLayout)findViewById(R.id.linLayout);
         TextView petName = new TextView(this);
         ImageView petIcon= new ImageView(this);
@@ -101,11 +104,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent petIntent = new Intent(getApplicationContext(), PetActivity.class);
+                petIntent.putExtra("pet_object",newPet);
                 startActivity(petIntent);
             }
         });
-
-
 
     }
 

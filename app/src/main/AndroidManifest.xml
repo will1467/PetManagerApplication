@@ -19,7 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PetActivity"></activity>
+        <activity android:name=".PetActivity" />
+        <activity android:name=".FeedingActivity" />
+        <activity android:name=".CalculatorActivity" />
+        <activity android:name=".expensesActivity"></activity>
     </application>
 
 </manifest>
