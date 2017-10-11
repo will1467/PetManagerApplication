@@ -24,6 +24,14 @@
         <activity android:name=".CalculatorActivity" />
         <activity android:name=".expensesActivity" />
         <activity android:name=".WalkingActivity"></activity>
+
+        <receiver android:name="com.example.williamrussa3.petmanagerapplication.AlarmReceiver">
+            <intent-filter>
+                <action android:name="com.example.williamrussa3.petmanagerapplication" />
+            </intent-filter>
+        </receiver>
+
+
     </application>
 
 </manifest>
