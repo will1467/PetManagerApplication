@@ -3,12 +3,30 @@ package com.example.williamrussa3.petmanagerapplication;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 public class PetActivity extends AppCompatActivity {
 
     private Pet mPet;
+
+    String[] imageCaptions = {
+            "Pet Feeding",
+            "Pet Walking",
+            "Pet Calculator",
+            "Pet Expenses",
+    } ;
+    Integer[] imageID = {
+            R.drawable.pet_feeding,
+            R.drawable.dog_walking,
+            R.drawable.calculator,
+            R.drawable.expenses_log,
+
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,38 +34,38 @@ public class PetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pet);
         mPet = getIntent().getParcelableExtra("pet_object");
 
-        ImageButton petFeed = (ImageButton)findViewById(R.id.pet_feed);
+        CustomList adapter = new CustomList(PetActivity.this, imageCaptions, imageID);
+        final ListView list=(ListView)findViewById(R.id.list);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        petFeed.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent petIntent = new Intent(getApplicationContext(), FeedingActivity.class);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               Object o = list.getItemAtPosition(position);
+                String textViewCapton = (String) o;
+
+                Class ActivityClass;
+
+                if(textViewCapton.equals(imageCaptions[0])){
+                    ActivityClass = FeedingActivity.class;
+                }
+                else if(textViewCapton.equals(imageCaptions[1])){
+                    ActivityClass = WalkingActivity.class;
+                }
+                else if(textViewCapton.equals(imageCaptions[2])){
+                    ActivityClass = CalculatorActivity.class;
+                }
+                else{
+                    ActivityClass = expensesActivity.class;
+                }
+
+                Intent petIntent = new Intent(getApplicationContext(),ActivityClass);
                 petIntent.putExtra("pet_object",mPet);
                 startActivity(petIntent);
-            }
-        });
 
-        ImageButton foodCalculator = (ImageButton) findViewById(R.id.food_calculator);
-
-        foodCalculator.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent petIntent = new Intent(getApplicationContext(), CalculatorActivity.class);
-                petIntent.putExtra("pet_object",mPet);
-                startActivity(petIntent);
-            }
-        });
-
-        ImageButton expensesLog = (ImageButton) findViewById(R.id.expenses_log);
-
-        expensesLog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent petIntent = new Intent(getApplicationContext(), expensesActivity.class);
-                petIntent.putExtra("pet_object",mPet);
-                startActivity(petIntent);
             }
         });
 
     }
+
 }
