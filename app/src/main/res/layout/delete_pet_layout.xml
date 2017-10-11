@@ -18,4 +18,10 @@
         android:layout_height="wrap_content"
         android:background="@android:color/background_light"
         android:spinnerMode="dialog" />
+
+    <Button
+        android:id="@+id/delete_button"
+        android:layout_width="213dp"
+        android:layout_height="wrap_content"
+        android:text="Delete" />
 </LinearLayout>

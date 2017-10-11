@@ -22,7 +22,8 @@
         <activity android:name=".PetActivity" />
         <activity android:name=".FeedingActivity" />
         <activity android:name=".CalculatorActivity" />
-        <activity android:name=".expensesActivity"></activity>
+        <activity android:name=".expensesActivity" />
+        <activity android:name=".WalkingActivity"></activity>
     </application>
 
 </manifest>

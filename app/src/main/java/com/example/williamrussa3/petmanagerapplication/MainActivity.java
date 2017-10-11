@@ -82,50 +82,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         PetList = getPetListFromPreferences();
 
         for(int i = 0; i < PetList.size(); i++){
-            CreatePetIcon(PetList.get(i));
+            CreatePetIcon(PetList.get(i),i);
         }
-    }
-
-    private void InitialiseDeletePetPopUpWindow() {
-
-        ArrayList<String> PetNames = new ArrayList<String>();
-
-        for(int i =0; i <PetList.size(); i++){
-            Pet pet = PetList.get(i);
-            PetNames.add(pet.GetName());
-        }
-
-
-
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View customView = inflater.inflate(R.layout.delete_pet_layout,null);
-
-        final PopupWindow mPopUpWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        mPopUpWindow.setFocusable(true);
-        mPopUpWindow.update();
-
-        mPopUpWindow.showAtLocation(customView, Gravity.CENTER,0,0);
-
-        Spinner spinner = (Spinner) customView.findViewById(R.id.spinner);
-        spinner.setOnItemSelectedListener(this);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_spinner_item,PetNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-
-    }
-
-    @Override
-    protected void onStop(){
-        super.onStop();
-
-        SharedPreferences mPrefs = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = mPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(PetList);
-        prefsEditor.putString("pet_array", json);
-        prefsEditor.commit();
     }
 
     private ArrayList<Pet> getPetListFromPreferences() {
@@ -140,6 +98,52 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Type type = new TypeToken<ArrayList<Pet>>(){}.getType();
         ArrayList<Pet> Pets = gson.fromJson(jsonData,type);
         return Pets;
+    }
+
+    private void SavePreferences(){
+        SharedPreferences mPrefs = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(PetList);
+        prefsEditor.putString("pet_array", json);
+        prefsEditor.commit();
+    }
+
+    private void InitialiseDeletePetPopUpWindow() {
+
+        ArrayList<String> PetNames = new ArrayList<String>();
+
+        for(int i =0; i <PetList.size(); i++){
+            Pet pet = PetList.get(i);
+            PetNames.add(pet.GetName());
+        }
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View customView = inflater.inflate(R.layout.delete_pet_layout,null);
+
+        final PopupWindow mPopUpWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        mPopUpWindow.setFocusable(true);
+        mPopUpWindow.update();
+
+        mPopUpWindow.showAtLocation(customView, Gravity.CENTER,0,0);
+
+        final Spinner spinner = (Spinner) customView.findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(this);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_spinner_item,PetNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        Button deleteButton = (Button) customView.findViewById(R.id.delete_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SavePreferences();
+                mPopUpWindow.dismiss();
+            }
+        });
+
+
     }
 
 
@@ -170,8 +174,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 if (mPetBreedEditText.getText() != null && mPetNameEditText.getText() != null) {
                     Pet newPet = new Pet(mPetNameEditText.getText().toString(), mPetBreedEditText.getText().toString());
-                    CreatePetIcon(newPet);
                     PetList.add(newPet);
+                    int index = PetList.indexOf(newPet);
+                    CreatePetIcon(newPet,index);
+                    SavePreferences();
 
                 }
             }
@@ -179,19 +185,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    private void CreatePetIcon(final Pet newPet) {
+    private void CreatePetIcon(final Pet newPet, int index) {
         LinearLayout linearLayout =  (LinearLayout)findViewById(R.id.linLayout);
-        TextView petName = new TextView(this);
-        ImageView petIcon= new ImageView(this);
-        petIcon.setImageResource(R.drawable.pet_icon);
-        petIcon.setAdjustViewBounds(true);
-        petIcon.setMaxWidth( (linearLayout.getWidth() / 3));
-        petName.setText(newPet.GetName());
-        petName.setTextSize(30.0F);
-        linearLayout.addView(petName);
-        linearLayout.addView(petIcon);
+        Button petButton = new Button(this);
+        petButton.setMaxHeight((linearLayout.getHeight()/4));
+        petButton.setMaxWidth((linearLayout.getWidth()/3));
+        petButton.setText(newPet.GetName() + " (" + newPet.GetBreed() + ")");
+        petButton.setTextSize(20.0F);
+        linearLayout.addView(petButton,index);
 
-        petIcon.setOnClickListener(new View.OnClickListener() {
+        petButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent petIntent = new Intent(getApplicationContext(), PetActivity.class);
@@ -227,11 +230,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String selectedItem = (String) parent.getItemAtPosition(position);
+        LinearLayout linearLayout =  (LinearLayout)findViewById(R.id.linLayout);
 
         for(int i = 0; i < PetList.size(); i++ ){
             Pet pet = PetList.get(i);
             if(pet.GetName().equals(selectedItem)){
                 PetList.remove(i);
+                linearLayout.removeViewAt(i);
             }
         }
 
