@@ -6,4 +6,40 @@
     android:layout_height="match_parent"
     tools:context="com.example.williamrussa3.petmanagerapplication.FeedingActivity">
 
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="495dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
+
+        <TextView
+            android:id="@+id/feeding_title"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:text="Schedule Feeding Times"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="30sp"
+            tools:layout_editor_absoluteX="39dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+        <TextView
+            android:id="@+id/feedTime_Name"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:text="Feeding Time 1"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/time_picker_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:onClick="showTimePicker"
+            android:text="Choose Time" />
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
