@@ -52,7 +52,7 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private ArrayList<Pet> PetList;
+    public static ArrayList<Pet> PetList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    private void CreatePetIcon(final Pet newPet, int index) {
+    private void CreatePetIcon(final Pet newPet, final int index) {
         LinearLayout linearLayout =  (LinearLayout)findViewById(R.id.linLayout);
         Button petButton = new Button(this);
         petButton.setMaxHeight((linearLayout.getHeight()/4));
@@ -199,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onClick(View v) {
                 Intent petIntent = new Intent(getApplicationContext(), PetActivity.class);
                 petIntent.putExtra("pet_object",newPet);
+                petIntent.putExtra("pet_index",index);
                 startActivity(petIntent);
             }
         });

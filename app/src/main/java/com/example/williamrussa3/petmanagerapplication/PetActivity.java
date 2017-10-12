@@ -12,6 +12,7 @@ import android.widget.ListView;
 public class PetActivity extends AppCompatActivity {
 
     private Pet mPet;
+    private int mPetIndex;
 
     String[] imageCaptions = {
             "Pet Feeding",
@@ -33,6 +34,7 @@ public class PetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet);
         mPet = getIntent().getParcelableExtra("pet_object");
+        mPetIndex = getIntent().getIntExtra("pet_index",0);
 
         CustomList adapter = new CustomList(PetActivity.this, imageCaptions, imageID);
         final ListView list=(ListView)findViewById(R.id.list);
@@ -61,6 +63,7 @@ public class PetActivity extends AppCompatActivity {
 
                 Intent petIntent = new Intent(getApplicationContext(),ActivityClass);
                 petIntent.putExtra("pet_object",mPet);
+                petIntent.putExtra("pet_index", mPetIndex);
                 startActivity(petIntent);
 
             }

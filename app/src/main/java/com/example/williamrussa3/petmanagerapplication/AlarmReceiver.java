@@ -7,21 +7,19 @@ import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-import android.widget.Toast;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
-
-            String CHANNEL_ID = "my_channel_01";
+            String message = intent.getStringExtra("Message");
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                            .setSmallIcon(android.R.drawable.alert_dark_frame)
-                            .setContentTitle("My notification")
-                            .setContentText("Hello World!");
+                    .setSmallIcon(android.R.drawable.ic_menu_my_calendar)
+                    .setContentTitle("Feeding Time")
+                    .setContentText(message);
 
             Intent resultIntent = new Intent(context, FeedingActivity.class);
 
@@ -34,6 +32,13 @@ public class AlarmReceiver extends BroadcastReceiver {
             mBuilder.setContentIntent(resultPendingIntent);
             NotificationManager mNotificationManager =
                     (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            mBuilder.setVibrate(new long[] { 1000, 1000});
+            mBuilder.setLights(Color.GREEN, 3000, 3000);
+
             mNotificationManager.notify(1, mBuilder.build());
+
+
+
         }
     }
