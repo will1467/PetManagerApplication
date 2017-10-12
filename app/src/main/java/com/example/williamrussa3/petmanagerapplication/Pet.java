@@ -24,7 +24,7 @@ public class Pet implements Parcelable {
     public Pet(String newName, String newBreed){
         _name = newName;
         _breed = newBreed;
-        _feedingDates = new ArrayList<ScheduledTime>();
+        _feedingDates = new ArrayList<ScheduledTime>(0);
     }
 
     public String GetName(){

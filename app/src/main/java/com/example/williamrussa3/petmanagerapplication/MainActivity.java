@@ -87,9 +87,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private ArrayList<Pet> getPetListFromPreferences() {
-        SharedPreferences mPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences mPrefs = getSharedPreferences("PET_DATA",Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        String jsonData = mPref.getString("pet_array","");
+        String jsonData = mPrefs.getString("pet_array","");
 
         if(jsonData.isEmpty()){
             return new ArrayList<Pet>();
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void SavePreferences(){
-        SharedPreferences mPrefs = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences mPrefs = getSharedPreferences("PET_DATA",Context.MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(PetList);
