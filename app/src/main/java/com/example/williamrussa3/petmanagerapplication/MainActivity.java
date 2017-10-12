@@ -52,7 +52,7 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private ArrayList<Pet> PetList;
+    public static ArrayList<Pet> PetList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,9 +94,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private ArrayList<Pet> getPetListFromPreferences() {
-        SharedPreferences mPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences mPrefs = getSharedPreferences("PET_DATA",Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        String jsonData = mPref.getString("pet_array","");
+        String jsonData = mPrefs.getString("pet_array","");
 
         if(jsonData.isEmpty()){
             return new ArrayList<Pet>();
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void SavePreferences(){
-        SharedPreferences mPrefs = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences mPrefs = getSharedPreferences("PET_DATA",Context.MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(PetList);
@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    private void CreatePetIcon(final Pet newPet, int index) {
+    private void CreatePetIcon(final Pet newPet, final int index) {
         LinearLayout linearLayout =  (LinearLayout)findViewById(R.id.linLayout);
         Button petButton = new Button(this);
         petButton.setMaxHeight((linearLayout.getHeight()/4));
@@ -211,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onClick(View v) {
                 Intent petIntent = new Intent(getApplicationContext(), PetActivity.class);
                 petIntent.putExtra("pet_object",newPet);
+                petIntent.putExtra("pet_index",index);
                 startActivity(petIntent);
             }
         });
