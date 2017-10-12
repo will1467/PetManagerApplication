@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class expensesActivity extends AppCompatActivity {
 
     private Pet mPet;
-    Database database;
+    DBHelper dbHelper;
     ArrayAdapter<String> itemsAdapter;
     ListView expListView;
 
@@ -28,7 +28,7 @@ public class expensesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_expenses);
 
         mPet = getIntent().getParcelableExtra("pet_object");
-        database = new Database(this);
+        dbHelper = new DBHelper(this);
         expListView = (ListView)findViewById(R.id.expenseList);
 
         loadExpenseList();
@@ -37,7 +37,7 @@ public class expensesActivity extends AppCompatActivity {
     // Populate the screen with expenses previously entered or set the adapter if there is
     // nothing
     private void loadExpenseList() {
-        ArrayList<String> expList = database.getTaskList();
+        ArrayList<String> expList = dbHelper.getTaskList();
         if(itemsAdapter == null){
             itemsAdapter = new ArrayAdapter<String>(this,R.layout.row,R.id.task_title,expList);
             expListView.setAdapter(itemsAdapter);
@@ -75,7 +75,7 @@ public class expensesActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 String title = String.valueOf(expTitle.getText());
                                 String detail = String.valueOf(expDetails.getText());
-                                database.insertNewExpense(title, detail);
+                                dbHelper.insertNewExpense(title, detail);
                                 loadExpenseList();
                             }
                         })
@@ -91,7 +91,7 @@ public class expensesActivity extends AppCompatActivity {
         View parent = (View)view.getParent();
         TextView taskTextView = (TextView)parent.findViewById(R.id.task_title);
         String task = String.valueOf(taskTextView.getText());
-        database.deleteExpense(task);
+        dbHelper.deleteExpense(task);
         loadExpenseList();
     }
 }

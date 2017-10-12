@@ -61,6 +61,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Button expLogBtn = (Button) findViewById(R.id.exp_log_btn);
+        expLogBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InitialiseExpenseLog();
+            }
+        });
 
         FloatingActionButton addPetFab = (FloatingActionButton) findViewById(R.id.add_pet);
         addPetFab.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +114,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         String json = gson.toJson(PetList);
         prefsEditor.putString("pet_array", json);
         prefsEditor.commit();
+    }
+
+    private void InitialiseExpenseLog() {
+        Intent i = new Intent(this, expensesActivity.class);
+        startActivity(i);
     }
 
     private void InitialiseDeletePetPopUpWindow() {

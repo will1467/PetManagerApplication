@@ -67,4 +67,13 @@
         app:layout_anchorGravity="bottom|center_horizontal"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
+    <Button
+        android:id="@+id/exp_log_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|left"
+        android:text="Expense Log"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="bottom|right" />
+
 </android.support.design.widget.CoordinatorLayout>
