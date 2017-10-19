@@ -18,9 +18,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -38,6 +40,7 @@ public class FeedingActivity extends AppCompatActivity implements DialogInterfac
 
     private static Pet mPet;
     private int mPetIndex;
+    ArrayAdapter<String> itemsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,43 +99,55 @@ public class FeedingActivity extends AppCompatActivity implements DialogInterfac
     }
 
     private void AddFeedingTime() {
-        Log.e("Mssg", "Adding Feeding Time");
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.feeding_lin_layout);
-        linearLayout.removeAllViews();
+        ArrayList<String> expList = new ArrayList<String>();
+        ListView feedingTimesListView = (ListView) findViewById(R.id.feedingTimesList);
         Log.e("Mssg", Integer.toString(mPet.GetFeedingTimeLength()));
-        for (int index = 0; index < mPet.GetFeedingTimeLength();  index++) {
+        for (int index = 0; index < mPet.GetFeedingTimeLength(); index++) {
             ScheduledTime scheduledTime = mPet.GetFeedingTime(index);
             Date date = scheduledTime.GetDate();
-            String name = "Feeding Time " + (index+1);
+            String name = "Feeding Time " + (index + 1);
             Calendar c = Calendar.getInstance();
             c.setTime(date);
-            TextView feedingTime = new TextView(this);
-            feedingTime.setMaxHeight((linearLayout.getHeight()/4));
-            feedingTime.setMaxWidth((linearLayout.getWidth()/3));
 
-            if(c.get(Calendar.MINUTE) < 10) {
-                feedingTime.setText(name + " " + c.get( Calendar.HOUR_OF_DAY) + ":" + "0" + c.get(Calendar.MINUTE));
+            if (c.get(Calendar.MINUTE) < 10) {
+                expList.add(name + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + "0" + c.get(Calendar.MINUTE));
+            } else {
+                expList.add(name + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
             }
-            else {
-                feedingTime.setText(name + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
-            }
-
-
-            feedingTime.setTextSize(20.0F);
-            feedingTime.setTextColor(Color.BLACK);
-            feedingTime.setPadding(0,20,0,0);
-            linearLayout.addView(feedingTime, index);
-
-            Button deleteButton = new Button(this);
-            deleteButton.setBackgroundResource(android.R.drawable.ic_delete);
-
-            linearLayout.addView(deleteButton,index);
         }
+            if (itemsAdapter == null) {
+                itemsAdapter = new ArrayAdapter<String>(this, R.layout.row_feeding, R.id.feeding_title, expList);
+                feedingTimesListView.setAdapter(itemsAdapter);
+            } else {
+                itemsAdapter.clear(); // Make sure there is no old things left over
+                itemsAdapter.addAll(expList);
+                itemsAdapter.notifyDataSetChanged(); // Notify that data has changed and update views
+            }
+    }
+
+    public void deleteTask(View view) {
+        View parent = (View) view.getParent();
+        TextView timeTextView = (TextView) parent.findViewById(R.id.feeding_title);
+        String value = String.valueOf(timeTextView.getText());
+        int indexToBeDeleted = (Integer.parseInt(value.substring(13, 14)) - 1);
+        mPet.RemoveFeedingTime(indexToBeDeleted);
+        AddFeedingTime();
+        RemoveAlarm(indexToBeDeleted);
+    }
+
+    private void RemoveAlarm(int indexToBeDeleted) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(),
+                AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getApplicationContext(), indexToBeDeleted, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.cancel(pendingIntent);
     }
 
 
 
-public static class TimePickerFragment extends DialogFragment
+    public static class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
     @Override
@@ -158,31 +173,30 @@ public static class TimePickerFragment extends DialogFragment
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Log.e("mssg","onTimeSet called");
-        ScheduleFeeding(hourOfDay, minute);
         Toast.makeText(getContext(), "Feeding time has been scheduled", Toast.LENGTH_LONG).show();
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
         Date date = calendar.getTime();
-        mPet.SetFeedingTime(date);
+        int mFeedingTimeId = mPet.SetFeedingTime(date);
+        ScheduleFeeding(hourOfDay, minute, mFeedingTimeId);
     }
 
-    private void ScheduleFeeding(int hourOfDay, int minute) {
+    private void ScheduleFeeding(int hourOfDay, int minute, int mFeedingTimeId) {
         AlarmManager alarmMgr;
         PendingIntent alarmIntent;
 
         alarmMgr = (AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getContext(), AlarmReceiver.class);
         intent.putExtra("Message", mPet.GetName() + " needs feeding");
-        alarmIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
+        alarmIntent = PendingIntent.getBroadcast(getContext(), mFeedingTimeId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
 
-        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
+        alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),alarmIntent);
 
     }
 

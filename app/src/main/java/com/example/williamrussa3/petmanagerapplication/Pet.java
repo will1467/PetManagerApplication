@@ -43,9 +43,15 @@ public class Pet implements Parcelable {
         return _feedingDates.size();
     }
 
-    public void SetFeedingTime(Date date) {
+    public void RemoveFeedingTime(int indexToBeDeleted) {
+        Log.e("index being removed", Integer.toString(indexToBeDeleted));
+        _feedingDates.remove(indexToBeDeleted);
+    }
+
+    public int SetFeedingTime(Date date) {
         ScheduledTime scheduledTime = new ScheduledTime(date);
         _feedingDates.add(scheduledTime);
+        return _feedingDates.indexOf(scheduledTime);
 
     }
 

@@ -39,7 +39,7 @@ public class expensesActivity extends AppCompatActivity {
     private void loadExpenseList() {
         ArrayList<String> expList = dbHelper.getTaskList();
         if(itemsAdapter == null){
-            itemsAdapter = new ArrayAdapter<String>(this,R.layout.row,R.id.task_title,expList);
+            itemsAdapter = new ArrayAdapter<String>(this,R.layout.row_expenses,R.id.task_title,expList);
             expListView.setAdapter(itemsAdapter);
         }
         else {
