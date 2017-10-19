@@ -63,7 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // exp String comes with all the details from the database for a single expense
     // Split the string into individual words and test to see if they are in the database
-    // If the strings are found in the database within the same row_expenses the row_expenses will be deleted
+    // If the strings are found in the database within the same row_adapter the row_adapter will be deleted
     public void deleteExpense(String exp){
         SQLiteDatabase db = this.getWritableDatabase();
 

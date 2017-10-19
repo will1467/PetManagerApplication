@@ -18,13 +18,11 @@ public class PetActivity extends AppCompatActivity {
             "Pet Feeding",
             "Pet Walking",
             "Pet Calculator",
-            "Pet Expenses",
     } ;
     Integer[] imageID = {
             R.drawable.pet_feeding,
             R.drawable.dog_walking,
             R.drawable.calculator,
-            R.drawable.expenses_log,
 
 
     };
@@ -58,7 +56,7 @@ public class PetActivity extends AppCompatActivity {
                     ActivityClass = CalculatorActivity.class;
                 }
                 else{
-                    ActivityClass = expensesActivity.class;
+                    ActivityClass = ExpensesActivity.class;
                 }
 
                 Intent petIntent = new Intent(getApplicationContext(),ActivityClass);

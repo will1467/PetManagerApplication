@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mainlayout"
     tools:context="com.example.williamrussa3.petmanagerapplication.MainActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/content_main"
-        android:id="@+id/include" />
+    <ListView
+        android:id="@+id/petList"
+        android:layout_width="wrap_content"
+        android:layout_height="447dp"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/add_pet_text"
@@ -30,30 +22,15 @@
         android:layout_height="wrap_content"
         android:text="Add Pet"
         android:textSize="20sp"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="bottom|center_horizontal" />
+        app:layout_anchorGravity="bottom|center_horizontal"
+        tools:layout_constraintBottom_creator="1"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="16dp" />
 
-
-    <TextView
-        android:id="@+id/delete_pet_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete Pet"
-        android:textSize="20sp"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="bottom|left" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/delete_pet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|right"
-        android:layout_margin="@dimen/fab_margin"
-        android:paddingBottom="30dp"
-        android:tint="@color/colorPrimary"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="bottom|left"
-        app:srcCompat="@android:drawable/ic_delete" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_pet"
@@ -63,17 +40,27 @@
         android:layout_margin="@dimen/fab_margin"
         android:paddingBottom="30dp"
         android:tint="@color/colorPrimary"
-        app:layout_anchor="@+id/include"
         app:layout_anchorGravity="bottom|center_horizontal"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:srcCompat="@android:drawable/ic_menu_add"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toTopOf="@+id/add_pet_text"
+        android:layout_marginEnd="13dp"
+        app:layout_constraintRight_toRightOf="@+id/add_pet_text"
+        android:layout_marginBottom="9dp" />
 
     <Button
         android:id="@+id/exp_log_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top|left"
-        android:text="Expense Log"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="bottom|right" />
+        android:layout_marginEnd="43dp"
+        android:text="Expenses Log"
+        app:layout_anchorGravity="bottom|right"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="37dp" />
 
-</android.support.design.widget.CoordinatorLayout>
+</android.support.constraint.ConstraintLayout>

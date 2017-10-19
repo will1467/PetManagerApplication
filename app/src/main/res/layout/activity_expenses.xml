@@ -8,7 +8,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context="com.example.williamrussa3.petmanagerapplication.expensesActivity">
+    tools:context="com.example.williamrussa3.petmanagerapplication.ExpensesActivity">
 
     <ListView
         android:id="@+id/expenseList"

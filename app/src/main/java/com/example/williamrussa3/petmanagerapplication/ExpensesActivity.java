@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class expensesActivity extends AppCompatActivity {
+public class ExpensesActivity extends AppCompatActivity {
 
     private Pet mPet;
     DBHelper dbHelper;
@@ -39,7 +39,7 @@ public class expensesActivity extends AppCompatActivity {
     private void loadExpenseList() {
         ArrayList<String> expList = dbHelper.getTaskList();
         if(itemsAdapter == null){
-            itemsAdapter = new ArrayAdapter<String>(this,R.layout.row_expenses,R.id.task_title,expList);
+            itemsAdapter = new ArrayAdapter<String>(this,R.layout.row_adapter,R.id.task_title,expList);
             expListView.setAdapter(itemsAdapter);
         }
         else {
@@ -87,7 +87,7 @@ public class expensesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void deleteTask(View view){
+    public void DeleteTask(View view){
         View parent = (View)view.getParent();
         TextView taskTextView = (TextView)parent.findViewById(R.id.task_title);
         String task = String.valueOf(taskTextView.getText());

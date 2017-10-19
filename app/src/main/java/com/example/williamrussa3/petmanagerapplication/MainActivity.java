@@ -33,6 +33,7 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -50,16 +51,15 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
     public static ArrayList<Pet> PetList;
+    ArrayAdapter<String> itemsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         Button expLogBtn = (Button) findViewById(R.id.exp_log_btn);
         expLogBtn.setOnClickListener(new View.OnClickListener() {
@@ -78,37 +78,29 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         });
 
-        FloatingActionButton deletePetFab = (FloatingActionButton) findViewById(R.id.delete_pet);
-        deletePetFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InitialiseDeletePetPopUpWindow();
-            }
-        });
 
         PetList = getPetListFromPreferences();
 
-        for(int i = 0; i < PetList.size(); i++){
-            CreatePetIcon(PetList.get(i),i);
-        }
+        PopulatePetList();
     }
 
     private ArrayList<Pet> getPetListFromPreferences() {
-        SharedPreferences mPrefs = getSharedPreferences("PET_DATA",Context.MODE_PRIVATE);
+        SharedPreferences mPrefs = getSharedPreferences("PET_DATA", Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        String jsonData = mPrefs.getString("pet_array","");
+        String jsonData = mPrefs.getString("pet_array", "");
 
-        if(jsonData.isEmpty()){
+        if (jsonData.isEmpty()) {
             return new ArrayList<Pet>();
         }
 
-        Type type = new TypeToken<ArrayList<Pet>>(){}.getType();
-        ArrayList<Pet> Pets = gson.fromJson(jsonData,type);
+        Type type = new TypeToken<ArrayList<Pet>>() {
+        }.getType();
+        ArrayList<Pet> Pets = gson.fromJson(jsonData, type);
         return Pets;
     }
 
-    private void SavePreferences(){
-        SharedPreferences mPrefs = getSharedPreferences("PET_DATA",Context.MODE_PRIVATE);
+    private void SavePreferences() {
+        SharedPreferences mPrefs = getSharedPreferences("PET_DATA", Context.MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(PetList);
@@ -117,58 +109,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void InitialiseExpenseLog() {
-        Intent i = new Intent(this, expensesActivity.class);
+        Intent i = new Intent(this, ExpensesActivity.class);
         startActivity(i);
-    }
-
-    private void InitialiseDeletePetPopUpWindow() {
-
-        ArrayList<String> PetNames = new ArrayList<String>();
-
-        for(int i =0; i <PetList.size(); i++){
-            Pet pet = PetList.get(i);
-            PetNames.add(pet.GetName());
-        }
-
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View customView = inflater.inflate(R.layout.delete_pet_layout,null);
-
-        final PopupWindow mPopUpWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        mPopUpWindow.setFocusable(true);
-        mPopUpWindow.update();
-
-        mPopUpWindow.showAtLocation(customView, Gravity.CENTER,0,0);
-
-        final Spinner spinner = (Spinner) customView.findViewById(R.id.spinner);
-        spinner.setOnItemSelectedListener(this);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_spinner_item,PetNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        Button deleteButton = (Button) customView.findViewById(R.id.delete_button);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                SavePreferences();
-                mPopUpWindow.dismiss();
-            }
-        });
-
-
     }
 
 
     private void InitialiseAddPetPopUpWindow() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View customView = inflater.inflate(R.layout.add_pet_layout,null);
+        View customView = inflater.inflate(R.layout.add_pet_layout, null);
 
         final PopupWindow mPopUpWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         mPopUpWindow.setFocusable(true);
         mPopUpWindow.update();
 
-        mPopUpWindow.showAtLocation(customView, Gravity.CENTER,0,0);
+        mPopUpWindow.showAtLocation(customView, Gravity.CENTER, 0, 0);
 
         Button mSubmitButton = (Button) customView.findViewById(R.id.submitButton);
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
@@ -187,8 +142,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (mPetBreedEditText.getText() != null && mPetNameEditText.getText() != null) {
                     Pet newPet = new Pet(mPetNameEditText.getText().toString(), mPetBreedEditText.getText().toString());
                     PetList.add(newPet);
-                    int index = PetList.indexOf(newPet);
-                    CreatePetIcon(newPet,index);
+                    PopulatePetList();
                     SavePreferences();
 
                 }
@@ -197,25 +151,57 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    private void CreatePetIcon(final Pet newPet, final int index) {
-        LinearLayout linearLayout =  (LinearLayout)findViewById(R.id.linLayout);
-        Button petButton = new Button(this);
-        petButton.setMaxHeight((linearLayout.getHeight()/4));
-        petButton.setMaxWidth((linearLayout.getWidth()/3));
-        petButton.setText(newPet.GetName() + " (" + newPet.GetBreed() + ")");
-        petButton.setTextSize(20.0F);
-        linearLayout.addView(petButton,index);
+    private void PopulatePetList() {
+        ArrayList<String> petArrayList = new ArrayList<String>();
+        ListView petListView = (ListView) findViewById(R.id.petList);
 
-        petButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        for (int index = 0; index < PetList.size(); index++) {
+            petArrayList.add(PetList.get(index).GetName());
+        }
+
+        if (itemsAdapter == null) {
+            itemsAdapter = new ArrayAdapter<String>(this, R.layout.row_main, R.id.pet_button, petArrayList);
+            petListView.setAdapter(itemsAdapter);
+        } else {
+            itemsAdapter.clear(); // Make sure there is no old things left over
+            itemsAdapter.addAll(petArrayList);
+            itemsAdapter.notifyDataSetChanged(); // Notify that data has changed and update views
+        }
+    }
+
+    public void StartPetActivity(View view) {
+        View parent = (View) view.getParent();
+        Button petButton = (Button) parent.findViewById(R.id.pet_button);
+
+        String petName = String.valueOf(petButton.getText());
+
+        for (int index = 0; index < PetList.size(); index++) {
+            if (PetList.get(index).GetName().equals(petName)) {
+
                 Intent petIntent = new Intent(getApplicationContext(), PetActivity.class);
-                petIntent.putExtra("pet_object",newPet);
-                petIntent.putExtra("pet_index",index);
+                petIntent.putExtra("pet_object", PetList.get(index));
+                petIntent.putExtra("pet_index", index);
                 startActivity(petIntent);
-            }
-        });
 
+            }
+        }
+    }
+
+    public void DeleteTask(View view) {
+
+        View parent = (View) view.getParent();
+        Button petButton = (Button) parent.findViewById(R.id.pet_button);
+
+        String petName = String.valueOf(petButton.getText());
+
+        for (int index = 0; index < PetList.size(); index++) {
+            if (PetList.get(index).GetName().equals(petName)) {
+                PetList.remove(index);
+            }
+        }
+
+        PopulatePetList();
+        SavePreferences();
     }
 
     @Override
@@ -238,25 +224,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String selectedItem = (String) parent.getItemAtPosition(position);
-        LinearLayout linearLayout =  (LinearLayout)findViewById(R.id.linLayout);
-
-        for(int i = 0; i < PetList.size(); i++ ){
-            Pet pet = PetList.get(i);
-            if(pet.GetName().equals(selectedItem)){
-                PetList.remove(i);
-                linearLayout.removeViewAt(i);
-            }
-        }
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }

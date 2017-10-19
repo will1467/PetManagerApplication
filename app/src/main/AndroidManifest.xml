@@ -22,7 +22,7 @@
         <activity android:name=".PetActivity" />
         <activity android:name=".FeedingActivity" />
         <activity android:name=".CalculatorActivity" />
-        <activity android:name=".expensesActivity" />
+        <activity android:name=".ExpensesActivity" />
         <activity android:name=".WalkingActivity"></activity>
 
         <receiver android:name="com.example.williamrussa3.petmanagerapplication.AlarmReceiver">

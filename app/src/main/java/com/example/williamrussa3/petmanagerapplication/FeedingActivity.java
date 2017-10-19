@@ -44,19 +44,20 @@ public class FeedingActivity extends AppCompatActivity implements DialogInterfac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feeding);
         mPet = getIntent().getParcelableExtra("pet_object");
         mPetIndex = getIntent().getIntExtra("pet_index",0);
         MainActivity.PetList = getPetListFromPreferences();
         mPet = MainActivity.PetList.get(mPetIndex);
-        AddFeedingTime();
+        PopulateFeedingTimeList();
     }
 
     @Override
     protected void onStop(){
+
         super.onStop();
-        Log.e("Mssg", "in onStop");
         MainActivity.PetList.remove(mPetIndex);
         MainActivity.PetList.add(mPet);
         SavePreferences();
@@ -64,9 +65,10 @@ public class FeedingActivity extends AppCompatActivity implements DialogInterfac
 
 
     private void SavePreferences(){
-        Log.e("Mssg", "saving");
+
         SharedPreferences mPrefs = getSharedPreferences("PET_DATA",Context.MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
+
         Gson gson = new Gson();
         String json = gson.toJson(MainActivity.PetList);
         prefsEditor.putString("pet_array", json);
@@ -74,6 +76,7 @@ public class FeedingActivity extends AppCompatActivity implements DialogInterfac
     }
 
     private ArrayList<Pet> getPetListFromPreferences() {
+
         SharedPreferences mPrefs = getSharedPreferences("PET_DATA",Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String jsonData = mPrefs.getString("pet_array","");
@@ -88,21 +91,22 @@ public class FeedingActivity extends AppCompatActivity implements DialogInterfac
     }
 
     public void showTimePicker(View v) {
+
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        Log.e("mssg","onDismiss called");
-        AddFeedingTime();
+        PopulateFeedingTimeList();
     }
 
-    private void AddFeedingTime() {
-        ArrayList<String> expList = new ArrayList<String>();
+    private void PopulateFeedingTimeList() {
+
+        ArrayList<String> feedingTimesList = new ArrayList<String>();
         ListView feedingTimesListView = (ListView) findViewById(R.id.feedingTimesList);
-        Log.e("Mssg", Integer.toString(mPet.GetFeedingTimeLength()));
-        for (int index = 0; index < mPet.GetFeedingTimeLength(); index++) {
+
+        for (int index = 0; index < mPet.GetFeedingTimeArrayLength(); index++) {
             ScheduledTime scheduledTime = mPet.GetFeedingTime(index);
             Date date = scheduledTime.GetDate();
             String name = "Feeding Time " + (index + 1);
@@ -110,48 +114,49 @@ public class FeedingActivity extends AppCompatActivity implements DialogInterfac
             c.setTime(date);
 
             if (c.get(Calendar.MINUTE) < 10) {
-                expList.add(name + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + "0" + c.get(Calendar.MINUTE));
+                feedingTimesList.add(name + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + "0" + c.get(Calendar.MINUTE));
             } else {
-                expList.add(name + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
+                feedingTimesList.add(name + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
             }
         }
             if (itemsAdapter == null) {
-                itemsAdapter = new ArrayAdapter<String>(this, R.layout.row_feeding, R.id.feeding_title, expList);
+                itemsAdapter = new ArrayAdapter<String>(this, R.layout.row_adapter, R.id.task_title, feedingTimesList);
                 feedingTimesListView.setAdapter(itemsAdapter);
             } else {
                 itemsAdapter.clear(); // Make sure there is no old things left over
-                itemsAdapter.addAll(expList);
+                itemsAdapter.addAll(feedingTimesList);
                 itemsAdapter.notifyDataSetChanged(); // Notify that data has changed and update views
             }
     }
 
-    public void deleteTask(View view) {
+    public void DeleteTask(View view) {
+
         View parent = (View) view.getParent();
-        TextView timeTextView = (TextView) parent.findViewById(R.id.feeding_title);
+        TextView timeTextView = (TextView) parent.findViewById(R.id.task_title);
+
         String value = String.valueOf(timeTextView.getText());
         int indexToBeDeleted = (Integer.parseInt(value.substring(13, 14)) - 1);
+
         mPet.RemoveFeedingTime(indexToBeDeleted);
-        AddFeedingTime();
+        PopulateFeedingTimeList();
         RemoveAlarm(indexToBeDeleted);
     }
 
     private void RemoveAlarm(int indexToBeDeleted) {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getApplicationContext(),
-                AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                getApplicationContext(), indexToBeDeleted, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), indexToBeDeleted, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.cancel(pendingIntent);
     }
 
 
 
-    public static class TimePickerFragment extends DialogFragment
-        implements TimePickerDialog.OnTimeSetListener {
+    public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     @Override
     public void onDismiss(final DialogInterface dialog) {
+
         super.onDismiss(dialog);
         final Activity activity = getActivity();
         if (activity instanceof DialogInterface.OnDismissListener) {
@@ -163,6 +168,7 @@ public class FeedingActivity extends AppCompatActivity implements DialogInterfac
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
@@ -172,17 +178,19 @@ public class FeedingActivity extends AppCompatActivity implements DialogInterfac
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        Log.e("mssg","onTimeSet called");
+
         Toast.makeText(getContext(), "Feeding time has been scheduled", Toast.LENGTH_LONG).show();
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
         Date date = calendar.getTime();
+
         int mFeedingTimeId = mPet.SetFeedingTime(date);
         ScheduleFeeding(hourOfDay, minute, mFeedingTimeId);
     }
 
     private void ScheduleFeeding(int hourOfDay, int minute, int mFeedingTimeId) {
+
         AlarmManager alarmMgr;
         PendingIntent alarmIntent;
 

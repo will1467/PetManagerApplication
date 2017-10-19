@@ -6,4 +6,48 @@
     android:layout_height="match_parent"
     tools:context="com.example.williamrussa3.petmanagerapplication.WalkingActivity">
 
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="495dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <TextView
+            android:id="@+id/walking_title"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:text="Schedule Walking Times"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="30sp"
+            tools:layout_editor_absoluteX="39dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+        <Button
+            android:id="@+id/time_picker_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="showTimePicker"
+            android:text="Schedule New Walking Time"
+            android:textAllCaps="false" />
+
+        <TextView
+            android:id="@+id/current_walking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:text="Current Walking Times"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="25sp" />
+
+        <ListView
+            android:id="@+id/walkingTimesList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
 </android.support.constraint.ConstraintLayout>
