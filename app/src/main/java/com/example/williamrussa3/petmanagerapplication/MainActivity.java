@@ -3,6 +3,7 @@ package com.example.williamrussa3.petmanagerapplication;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
@@ -13,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArraySet;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         addPetFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InitialiseAddPetPopUpWindow();
+                InitialiseAddPetDialog();
             }
 
         });
@@ -114,41 +116,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void InitialiseAddPetPopUpWindow() {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    private void InitialiseAddPetDialog() {
+        LayoutInflater inflater = getLayoutInflater();
         View customView = inflater.inflate(R.layout.add_pet_layout, null);
 
-        final PopupWindow mPopUpWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        mPopUpWindow.setFocusable(true);
-        mPopUpWindow.update();
-
-        mPopUpWindow.showAtLocation(customView, Gravity.CENTER, 0, 0);
-
-        Button mSubmitButton = (Button) customView.findViewById(R.id.submitButton);
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPopUpWindow.dismiss();
-            }
-        });
         final EditText mPetNameEditText = (EditText) customView.findViewById(R.id.petName);
         final EditText mPetBreedEditText = (EditText) customView.findViewById(R.id.petBreed);
+        final EditText mPetWeightEditText = (EditText) customView.findViewById(R.id.petWeight);
 
-        mPopUpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-
-                if (mPetBreedEditText.getText() != null && mPetNameEditText.getText() != null) {
-                    Pet newPet = new Pet(mPetNameEditText.getText().toString(), mPetBreedEditText.getText().toString());
-                    PetList.add(newPet);
-                    PopulatePetList();
-                    SavePreferences();
-
-                }
-            }
-        });
-
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(customView)
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (mPetBreedEditText.getText() != null && mPetNameEditText.getText() != null && mPetWeightEditText.getText() != null) {
+                            double mPetWeight = Double.parseDouble(mPetWeightEditText.getText().toString());
+                            Pet newPet = new Pet(mPetNameEditText.getText().toString(), mPetBreedEditText.getText().toString(),mPetWeight);
+                            PetList.add(newPet);
+                            PopulatePetList();
+                            SavePreferences();
+                        }
+                    }
+                    })
+                    .setNegativeButton("Cancel",null)
+                  .create();
+            dialog.show();
     }
 
     private void PopulatePetList() {
