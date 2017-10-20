@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.SystemClock;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -101,7 +102,7 @@ public class WalkingActivity extends AppCompatActivity implements DialogInterfac
         for (int index = 0; index < mPet.GetWalkingTimeArrayLength(); index++) {
             ScheduledTime scheduledTime = mPet.GetWalkingTime(index);
             Date date = scheduledTime.GetDate();
-            String name = "Feeding Time " + (index + 1);
+            String name = "Walking Time " + (index + 1);
             Calendar c = Calendar.getInstance();
             c.setTime(date);
 
@@ -196,7 +197,9 @@ public class WalkingActivity extends AppCompatActivity implements DialogInterfac
             calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
             calendar.set(Calendar.MINUTE, minute);
 
-            alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),alarmIntent);
+            alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,alarmIntent);
+
+
 
         }
 

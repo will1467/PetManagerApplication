@@ -22,6 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DB_TABLE="Log";
     public static final String DB_COLUMN_NAME = "ExpenseName";
     public static final String DB_COLUMN_DETAIL = "ExpenseDetail";
+    public static final String DB_COLUMN_COST = "ExpenseCost";
 
     /**
      * Called when the DBHelper is created for the first time. This is where the
@@ -32,7 +33,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query =
-                String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT,%s TEXT NOT NULL,%s TEXT NOT NULL);",DB_TABLE,DB_COLUMN_NAME, DB_COLUMN_DETAIL);
+                String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT,%s TEXT NOT NULL,%s TEXT NOT NULL);",DB_TABLE,DB_COLUMN_NAME, DB_COLUMN_DETAIL );
         db.execSQL(query);
     }
 

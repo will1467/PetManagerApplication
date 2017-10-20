@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class PetActivity extends AppCompatActivity {
 
@@ -33,6 +36,10 @@ public class PetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pet);
         mPet = getIntent().getParcelableExtra("pet_object");
         mPetIndex = getIntent().getIntExtra("pet_index",0);
+
+        TextView petInfo = (TextView) findViewById(R.id.petInfo);
+
+        petInfo.setText(" Name " + mPet.GetName() + "\n Breed: " + mPet.GetBreed() + "\n Weight: " + mPet.GetWeight() + "kg");
 
         CustomList adapter = new CustomList(PetActivity.this, imageCaptions, imageID);
         final ListView list=(ListView)findViewById(R.id.list);

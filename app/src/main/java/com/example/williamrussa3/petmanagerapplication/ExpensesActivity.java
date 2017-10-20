@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 public class ExpensesActivity extends AppCompatActivity {
 
-    private Pet mPet;
     DBHelper dbHelper;
     ArrayAdapter<String> itemsAdapter;
     ListView expListView;
@@ -27,7 +26,6 @@ public class ExpensesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expenses);
 
-        mPet = getIntent().getParcelableExtra("pet_object");
         dbHelper = new DBHelper(this);
         expListView = (ListView)findViewById(R.id.expenseList);
 
@@ -66,6 +64,7 @@ public class ExpensesActivity extends AppCompatActivity {
                 View inflatedView = inflater.inflate(R.layout.add_expense, null);
                 final EditText expTitle = (EditText) inflatedView.findViewById(R.id.expense);
                 final EditText expDetails = (EditText) inflatedView.findViewById(R.id.detail);
+                final EditText expCost = (EditText) inflatedView.findViewById(R.id.cost);
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Add New Expense")
                         .setMessage("What have you bought now?")
@@ -75,6 +74,7 @@ public class ExpensesActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 String title = String.valueOf(expTitle.getText());
                                 String detail = String.valueOf(expDetails.getText());
+                                Double cost = Double.parseDouble(expCost.getText().toString());
                                 dbHelper.insertNewExpense(title, detail);
                                 loadExpenseList();
                             }
