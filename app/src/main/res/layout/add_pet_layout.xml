@@ -10,18 +10,18 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:text="Enter Pet Details"
+        android:text="@string/sDets"
         android:textColor="@android:color/black"
         android:textSize="24sp" />
 
     <TextView
         android:id="@+id/petNameTitle"
-        android:layout_marginStart="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:labelFor="@+id/petName"
-        android:text="Name:"
+        android:text="@string/sName"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
@@ -38,12 +38,12 @@
 
     <TextView
         android:id="@+id/petBreedTitle"
-        android:layout_marginStart="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:labelFor="@+id/petName"
-        android:text="Breed:"
+        android:text="@string/sBreed"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
@@ -60,12 +60,12 @@
 
     <TextView
         android:id="@+id/petWeightTitle"
-        android:layout_marginStart="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:labelFor="@+id/petName"
-        android:text="Weight:"
+        android:text="@string/sWeight"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
@@ -90,14 +90,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Dog" />
+            android:text="@string/sDog" />
 
         <RadioButton
             android:id="@+id/radioButtonCat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cat" />
+            android:text="@string/sCat" />
     </RadioGroup>
 
 </LinearLayout>

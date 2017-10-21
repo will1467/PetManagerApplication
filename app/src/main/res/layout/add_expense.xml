@@ -7,44 +7,44 @@
         android:id="@+id/expense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:hint="Title of Expense" />
+        android:layout_marginTop="16dp"
+        android:hint="@string/hTitle" />
+
     <EditText
         android:id="@+id/detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="16dp"
-        android:hint="Details about expense"/>
+        android:layout_marginTop="4dp"
+        android:hint="@string/hDetail" />
 
     <EditText
         android:id="@+id/cost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="16dp"
-        android:inputType="numberDecimal"
-        android:hint="Cost"/>
+        android:layout_marginTop="4dp"
+        android:hint="@string/hCost"
+        android:inputType="numberDecimal" />
 
     <TextView
         android:id="@+id/pet_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="16dp"
-        android:text="Which Pet is this Expense For?"
+        android:layout_marginTop="4dp"
+        android:text="@string/hPet"
         android:textColor="@android:color/black"
-        android:textSize="20sp"
-        />
+        android:textSize="20sp" />
 
 
     <Spinner
