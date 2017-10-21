@@ -4,8 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.williamrussa3.petmanagerapplication.CalculatorActivity"
+    tools:context="com.example.williamrussa3.petmanagerapplication.CalculatorActivityDog"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/doginfo_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dog_info"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -115,6 +123,8 @@
         android:id="@+id/output_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/calc_output" />
+        android:text="@string/calc_output"
+        android:textAlignment="textStart"
+        android:textSize="30sp" />
 
 </LinearLayout>
