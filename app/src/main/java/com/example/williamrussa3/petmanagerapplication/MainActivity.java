@@ -1,12 +1,12 @@
 package com.example.williamrussa3.petmanagerapplication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,7 +24,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends Activity {
 
     public static ArrayList<Pet> PetList;
     ArrayAdapter<String> itemsAdapter;
@@ -37,7 +39,12 @@ public class MainActivity extends AppCompatActivity {
         expLogBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            if(PetList.size() != 0) {
                 InitialiseExpenseLog();
+            }
+            else{
+                Toast.makeText(getBaseContext(),"Please add a Pet first", Toast.LENGTH_LONG).show();
+            }
             }
         });
 
@@ -101,16 +108,29 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (mPetBreedEditText.getText() != null && mPetNameEditText.getText() != null && mPetWeightEditText.getText() != null) {
-                            double mPetWeight = Double.parseDouble(mPetWeightEditText.getText().toString());
-                            String petType = "";
-                            if(mPetTypeCat.isChecked()){
-                                petType = "Cat";
-                            }
-                            else if(mPetTypeDog.isChecked()){
-                                petType = "Dog";
-                            }
-                            Pet newPet = new Pet(mPetNameEditText.getText().toString(), mPetBreedEditText.getText().toString(),mPetWeight,petType);
+                        String mPetName = mPetNameEditText.getText().toString();
+                        String mPetBreed = mPetBreedEditText.getText().toString();
+                        double mPetWeight;
+
+                        try {
+                            mPetWeight = Double.parseDouble(mPetWeightEditText.getText().toString());
+                        }
+                        catch(NumberFormatException e){
+                            mPetWeight = 0.0;
+                        }
+                        String mPetType = "";
+                        if(mPetTypeCat.isChecked()){
+                            mPetType = "Cat";
+                        }
+                        else if(mPetTypeDog.isChecked()){
+                            mPetType = "Dog";
+                        }
+
+                        if(mPetName.equals("") || mPetBreed.equals("") || mPetWeight == 0.0 || mPetType.equals("")){
+                            Toast.makeText(getBaseContext(),"Please fill out all fields", Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            Pet newPet = new Pet(mPetName, mPetBreed,mPetWeight,mPetType);
                             PetList.add(newPet);
                             PopulatePetList();
                             SavePreferences();
@@ -158,42 +178,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void DeleteTask(View view) {
+    public void DeleteTask(final View view) {
 
-        View parent = (View) view.getParent();
-        Button petButton = (Button) parent.findViewById(R.id.pet_button);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to delete this pet?" + "\n\n" + "All data related to this pet will be lost")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                       View parent = (View) view.getParent();
+                        Button petButton = (Button) parent.findViewById(R.id.pet_button);
 
-        String petName = String.valueOf(petButton.getText());
+                        String petName = String.valueOf(petButton.getText());
 
-        for (int index = 0; index < PetList.size(); index++) {
-            if (PetList.get(index).GetName().equals(petName)) {
-                PetList.remove(index);
-            }
-        }
+                        for (int index = 0; index < PetList.size(); index++) {
+                            if (PetList.get(index).GetName().equals(petName)) {
+                                PetList.remove(index);
+                            }
+                        }
 
-        PopulatePetList();
-        SavePreferences();
-    }
+                        PopulatePetList();
+                        SavePreferences();
+                    }
+                })
+                .setNegativeButton("Cancel",null);
+                dialog.show();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

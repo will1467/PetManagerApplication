@@ -4,9 +4,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -23,15 +23,14 @@
         <activity android:name=".FeedingActivity" />
         <activity android:name=".CalculatorActivityDog" />
         <activity android:name=".ExpensesActivity" />
-        <activity android:name=".WalkingActivity" />
+        <activity android:name=".WalkingActivity"/>
+        <activity android:name=".CalculatorActivityCat"/>/>
 
         <receiver android:name=".AlarmReceiver">
             <intent-filter>
                 <action android:name="com.example.williamrussa3.petmanagerapplication" />
             </intent-filter>
         </receiver>
-
-        <activity android:name=".CalculatorActivityCat"></activity>
     </application>
 
 </manifest>

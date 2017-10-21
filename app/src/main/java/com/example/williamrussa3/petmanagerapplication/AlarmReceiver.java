@@ -17,7 +17,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             // TODO Auto-generated method stub
             String message = intent.getStringExtra("Message");
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                    .setSmallIcon(android.R.drawable.ic_menu_my_calendar)
+                    .setSmallIcon(R.drawable.notification)
                     .setContentTitle("Feeding Time")
                     .setContentText(message);
 
