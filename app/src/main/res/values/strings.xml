@@ -11,4 +11,15 @@
     <string name="calc_lazy">Lazy</string>
     <string name="calc_calc">Calculate Food Requirements</string>
     <string name="calc_output">Amount of Food Required</string>
+    <string name="cat_neut">Neutered/Nutless</string>
+    <string name="cat_intact">Intact</string>
+    <string name="cat_obese">Prone to Obesity</string>
+    <string name="cat_fat">Weight Loss</string>
+    <string name="cat_req">Cat Type/Dietary Requirements</string>
+    <string name="cat_info">Use this calculator to work out the recommended daily calorie intake for
+        your cat based off its weight. Use this calorie value to work out how many grams of food to give
+        your cat.</string>
+    <string name="dog_info">Use this calculator to work out the recommended daily calorie intake for
+        your dog based off its weight. Different dogs have different dietary intakes so use the
+        radio buttons to select the categories appropriate to your dog.</string>
 </resources>

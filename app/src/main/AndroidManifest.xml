@@ -21,17 +21,17 @@
         </activity>
         <activity android:name=".PetActivity" />
         <activity android:name=".FeedingActivity" />
-        <activity android:name=".CalculatorActivity" />
+        <activity android:name=".CalculatorActivityDog" />
         <activity android:name=".ExpensesActivity" />
-        <activity android:name=".WalkingActivity"/>
+        <activity android:name=".WalkingActivity" />
 
-        <receiver android:name="com.example.williamrussa3.petmanagerapplication.AlarmReceiver">
+        <receiver android:name=".AlarmReceiver">
             <intent-filter>
                 <action android:name="com.example.williamrussa3.petmanagerapplication" />
             </intent-filter>
         </receiver>
 
-
+        <activity android:name=".CalculatorActivityCat"></activity>
     </application>
 
 </manifest>
