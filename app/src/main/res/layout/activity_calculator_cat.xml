@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/cat_info"
+        android:textColor="@android:color/black"
         android:textAlignment="center"
         android:textSize="15sp"
         android:textStyle="bold" />
@@ -24,6 +25,7 @@
 
         <RadioGroup
             android:id="@+id/radioGroup"
+            android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ReqTitle"
@@ -32,6 +34,7 @@
 
             <RadioButton
                 android:id="@+id/noballs_rb"
+                android:textColor="@android:color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -39,6 +42,7 @@
 
             <RadioButton
                 android:id="@+id/intact_rb"
+                android:textColor="@android:color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -46,6 +50,7 @@
 
             <RadioButton
                 android:id="@+id/obese_rb"
+                android:textColor="@android:color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -53,6 +58,7 @@
 
             <RadioButton
                 android:id="@+id/fat_rb"
+                android:textColor="@android:color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -64,6 +70,7 @@
             android:id="@+id/ReqTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
             android:layout_alignParentTop="true"
             android:layout_marginTop="44dp"
             android:text="@string/cat_req"
@@ -79,6 +86,7 @@
         android:id="@+id/cat_calc_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
         android:text="@string/calc_calc" />
 
     <TextView
@@ -86,6 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/calc_output"
+        android:textColor="@android:color/black"
         android:textAlignment="textStart"
         android:textSize="30sp"
         android:textStyle="bold" />
