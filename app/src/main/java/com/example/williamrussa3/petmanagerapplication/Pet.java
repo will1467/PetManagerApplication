@@ -13,6 +13,7 @@ public class Pet implements Parcelable {
     private String _name;
     private String _breed;
     private double _weight;
+    private String _type;
     private ArrayList<ScheduledTime> _feedingDates;
     private ArrayList<ScheduledTime> _walkingDates;
 
@@ -21,14 +22,16 @@ public class Pet implements Parcelable {
         _name = in.readString();
         _breed = in.readString();
         _weight = in.readDouble();
+        _type = in.readString();
         _feedingDates = in.createTypedArrayList(ScheduledTime.CREATOR);
         _walkingDates = in.createTypedArrayList(ScheduledTime.CREATOR);
     }
 
-    public Pet(String newName, String newBreed , double newWeight) {
+    public Pet(String newName, String newBreed , double newWeight, String newType) {
         _name = newName;
         _breed = newBreed;
         _weight = newWeight;
+        _type = newType;
         _feedingDates = new ArrayList<ScheduledTime>(0);
         _walkingDates = new ArrayList<ScheduledTime>(0);
     }
@@ -42,6 +45,8 @@ public class Pet implements Parcelable {
     }
 
     public double GetWeight() { return _weight; }
+
+    public String GetType() { return _type;}
 
     public ScheduledTime GetFeedingTime(int index) {
         return _feedingDates.get(index);
@@ -92,6 +97,7 @@ public class Pet implements Parcelable {
         dest.writeString(_name);
         dest.writeString(_breed);
         dest.writeDouble(_weight);
+        dest.writeString(_type);
         dest.writeTypedList(_feedingDates);
         dest.writeTypedList(_walkingDates);
     }

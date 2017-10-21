@@ -1,58 +1,28 @@
 package com.example.williamrussa3.petmanagerapplication;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.util.ArraySet;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.RadioButton;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Array;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
-
 public class MainActivity extends AppCompatActivity {
 
     public static ArrayList<Pet> PetList;
@@ -71,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton addPetFab = (FloatingActionButton) findViewById(R.id.add_pet);
-        addPetFab.setOnClickListener(new View.OnClickListener() {
+        Button addPetButton = (Button) findViewById(R.id.add_pet_Button);
+        addPetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 InitialiseAddPetDialog();
@@ -123,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
         final EditText mPetNameEditText = (EditText) customView.findViewById(R.id.petName);
         final EditText mPetBreedEditText = (EditText) customView.findViewById(R.id.petBreed);
         final EditText mPetWeightEditText = (EditText) customView.findViewById(R.id.petWeight);
+        final RadioButton mPetTypeDog = (RadioButton) customView.findViewById(R.id.radioButtonDog);
+        final RadioButton mPetTypeCat = (RadioButton) customView.findViewById(R.id.radioButtonCat);
 
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(customView)
@@ -131,7 +103,14 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if (mPetBreedEditText.getText() != null && mPetNameEditText.getText() != null && mPetWeightEditText.getText() != null) {
                             double mPetWeight = Double.parseDouble(mPetWeightEditText.getText().toString());
-                            Pet newPet = new Pet(mPetNameEditText.getText().toString(), mPetBreedEditText.getText().toString(),mPetWeight);
+                            String petType = "";
+                            if(mPetTypeCat.isChecked()){
+                                petType = "Cat";
+                            }
+                            else if(mPetTypeDog.isChecked()){
+                                petType = "Dog";
+                            }
+                            Pet newPet = new Pet(mPetNameEditText.getText().toString(), mPetBreedEditText.getText().toString(),mPetWeight,petType);
                             PetList.add(newPet);
                             PopulatePetList();
                             SavePreferences();

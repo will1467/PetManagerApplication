@@ -9,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,23 +25,19 @@ public class ExpensesActivity extends AppCompatActivity {
     ArrayAdapter<String> itemsAdapter;
     ListView expListView;
     ArrayList<String> PetNames = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expenses);
 
-        /*for(int i =0; i <MainActivity.PetList.size(); i++){
-            Pet pet = MainActivity.PetList.get(i);
-            PetNames.add(pet.GetName());
-        }*/
+        for(int i =0; i <MainActivity.PetList.size(); i++){
+            PetNames.add(MainActivity.PetList.get(i).GetName());
+        }
 
         dbHelper = new DBHelper(this);
         expListView = (ListView)findViewById(R.id.expenseList);
 
-
-        //Log.i("NAMES", PetNames.get(0));
-        //Log.i("NAMES", PetNames.get(1));
-        //Log.i("NAMES", PetNames.get(2));
         loadExpenseList();
     }
 
@@ -56,6 +54,15 @@ public class ExpensesActivity extends AppCompatActivity {
             itemsAdapter.addAll(expList);
             itemsAdapter.notifyDataSetChanged(); // Notify that data has changed and update views
         }
+
+        ArrayList<Double> expCost = dbHelper.getExpenseCost();
+        Double total = 0.0;
+        for (Double cost : expCost) {
+            total += cost;
+        }
+
+        TextView totalCost = (TextView) findViewById(R.id.total_expenses);
+        totalCost.setText("Total" + " $" + String.format("%.2f",total));
     }
 
     // Inflate the menu that is used to add expenses to the list
@@ -76,6 +83,25 @@ public class ExpensesActivity extends AppCompatActivity {
                 final EditText expTitle = (EditText) inflatedView.findViewById(R.id.expense);
                 final EditText expDetails = (EditText) inflatedView.findViewById(R.id.detail);
                 final EditText expCost = (EditText) inflatedView.findViewById(R.id.cost);
+
+                final Spinner spinner = (Spinner) inflatedView.findViewById(R.id.spinner);
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(ExpensesActivity.this,android.R.layout.simple_spinner_item,PetNames);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(adapter);
+
+
+
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Add New Expense")
                         .setMessage("What have you bought now?")
@@ -86,7 +112,8 @@ public class ExpensesActivity extends AppCompatActivity {
                                 String title = String.valueOf(expTitle.getText());
                                 String detail = String.valueOf(expDetails.getText());
                                 Double cost = Double.parseDouble(expCost.getText().toString());
-                                dbHelper.insertNewExpense(title, detail, cost);
+                                String petName  = spinner.getSelectedItem().toString();
+                                dbHelper.insertNewExpense(title, detail, cost,petName);
                                 loadExpenseList();
                             }
                         })

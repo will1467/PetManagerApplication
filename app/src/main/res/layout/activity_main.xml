@@ -16,38 +16,22 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/add_pet_text"
+
+    <Button
+        android:id="@+id/add_pet_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Pet"
-        android:textSize="20sp"
         android:textColor="@android:color/black"
-        app:layout_anchorGravity="bottom|center_horizontal"
+        android:textSize="20sp"
+        android:textAllCaps="false"
         tools:layout_constraintBottom_creator="1"
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_pet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_margin="@dimen/fab_margin"
-        android:paddingBottom="30dp"
-        android:tint="@android:color/black"
-        app:layout_anchorGravity="bottom|center_horizontal"
-        app:srcCompat="@android:drawable/ic_menu_add"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toTopOf="@+id/add_pet_text"
-        android:layout_marginEnd="13dp"
-        app:layout_constraintRight_toRightOf="@+id/add_pet_text"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="33dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="16dp" />
 
     <Button
         android:id="@+id/exp_log_btn"
@@ -56,12 +40,15 @@
         android:layout_gravity="top|start"
         android:layout_marginEnd="30dp"
         android:text="Expenses Log"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textAllCaps="false"
         app:layout_anchorGravity="bottom|right"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintBottom_creator="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="50dp"
-        android:layout_marginRight="220dp" />
+        android:layout_marginBottom="33dp"
+        android:layout_marginRight="30dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:labelFor="@+id/petName"
-        android:text="Name"
+        android:text="Name:"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:labelFor="@+id/petName"
-        android:text="Breed"
+        android:text="Breed:"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:labelFor="@+id/petName"
-        android:text="Weight"
+        android:text="Weight:"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
@@ -79,5 +79,25 @@
         android:focusableInTouchMode="true"
         android:inputType="numberDecimal"
         android:text="" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RadioButton
+            android:id="@+id/radioButtonDog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Dog" />
+
+        <RadioButton
+            android:id="@+id/radioButtonCat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cat" />
+    </RadioGroup>
 
 </LinearLayout>
