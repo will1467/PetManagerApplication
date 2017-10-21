@@ -67,23 +67,29 @@ public class PetActivity extends AppCompatActivity {
 
                 Class ActivityClass;
 
-                //Start Activity depending
+                //Start Activity depending on which item was clicked on
                 if (textViewCapton.equals(mImageCaptions[0])) {
                     ActivityClass = FeedingActivity.class;
                 } else if (textViewCapton.equals(mImageCaptions[1])) {
                     ActivityClass = WalkingActivity.class;
                 } else if (textViewCapton.equals(mImageCaptions[2])) {
 
+                    //Start different calculator activity depending on type of pet
+
                     if (mPet.GetType().equals("Dog")) {
                         ActivityClass = CalculatorActivityDog.class;
                     } else {
                         ActivityClass = CalculatorActivityCat.class;
                     }
+
                 } else {
                     ActivityClass = ExpensesActivity.class;
                 }
 
+                //Start intent, pass pet index and pet data to all intents for use in those activities
+
                 Intent petIntent = new Intent(getApplicationContext(), ActivityClass);
+                petIntent.putExtra("pet_object",mPet);
                 petIntent.putExtra("pet_index", mPetIndex);
                 startActivity(petIntent);
 
