@@ -216,6 +216,7 @@ public class FeedingActivity extends AppCompatActivity implements DialogInterfac
 
         //Notify user feeding time has been scheduled using Toast
         Toast.makeText(getContext(), "Feeding time has been scheduled", Toast.LENGTH_LONG).show();
+
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
@@ -235,7 +236,7 @@ public class FeedingActivity extends AppCompatActivity implements DialogInterfac
 
         alarmMgr = (AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
 
-        //AlarmReceiver.java will recieve the alarm broadcast
+        //AlarmReceiver.java will receive the alarm broadcast
         Intent intent = new Intent(getContext(), AlarmReceiver.class);
 
         //Set intent message
