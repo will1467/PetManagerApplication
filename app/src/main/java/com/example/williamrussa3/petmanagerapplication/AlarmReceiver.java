@@ -12,33 +12,39 @@ import android.support.v4.app.NotificationCompat;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // TODO Auto-generated method stub
-            String message = intent.getStringExtra("Message");
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                    .setSmallIcon(R.drawable.notification)
-                    .setContentTitle("Feeding Time")
-                    .setContentText(message);
+    //Receive broadcast from system
 
-            Intent resultIntent = new Intent(context, FeedingActivity.class);
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        // TODO Auto-generated method stub
+        //Get notification message from intent, set icon, title, and message
+        String message = intent.getStringExtra("Message");
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.notification)
+                .setContentTitle("It's that time of the day!")
+                .setContentText(message);
 
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-            stackBuilder.addParentStack(FeedingActivity.class);
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        //Set parent stack so notification goes to Pet menu of app when notification is clicked on
 
-            mBuilder.setContentIntent(resultPendingIntent);
-            NotificationManager mNotificationManager =
-                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Intent resultIntent = new Intent(context, FeedingActivity.class);
 
-            mBuilder.setVibrate(new long[] { 1000, 1000});
-            mBuilder.setLights(Color.GREEN, 3000, 3000);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addParentStack(PetActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            mNotificationManager.notify(1, mBuilder.build());
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        //Set vibration and color of lights (if device supports it)
+
+        mBuilder.setVibrate(new long[]{1000, 1000});
+        mBuilder.setLights(Color.GREEN, 3000, 3000);
+
+        mNotificationManager.notify(1, mBuilder.build());
 
 
-
-        }
     }
+}

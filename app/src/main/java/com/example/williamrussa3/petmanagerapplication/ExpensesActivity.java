@@ -30,12 +30,12 @@ public class ExpensesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expenses);
 
-        for(int i =0; i <MainActivity.PetList.size(); i++){
-            PetNames.add(MainActivity.PetList.get(i).GetName());
+        for (int i = 0; i < MainActivity.mPetList.size(); i++) {
+            PetNames.add(MainActivity.mPetList.get(i).GetName());
         }
 
         dbHelper = new DBHelper(this);
-        expListView = (ListView)findViewById(R.id.expenseList);
+        expListView = (ListView) findViewById(R.id.expenseList);
 
         loadExpenseList();
     }
@@ -44,11 +44,10 @@ public class ExpensesActivity extends AppCompatActivity {
     // nothing
     private void loadExpenseList() {
         ArrayList<String> expList = dbHelper.getTaskList();
-        if(itemsAdapter == null){
-            itemsAdapter = new ArrayAdapter<String>(this,R.layout.row_adapter,R.id.task_title,expList);
+        if (itemsAdapter == null) {
+            itemsAdapter = new ArrayAdapter<String>(this, R.layout.row_adapter, R.id.task_title, expList);
             expListView.setAdapter(itemsAdapter);
-        }
-        else {
+        } else {
             itemsAdapter.clear(); // Make sure there is no old things left over
             itemsAdapter.addAll(expList);
             itemsAdapter.notifyDataSetChanged(); // Notify that data has changed and update views
@@ -61,7 +60,7 @@ public class ExpensesActivity extends AppCompatActivity {
         }
 
         TextView totalCost = (TextView) findViewById(R.id.total_expenses);
-        totalCost.setText("Total" + " $" + String.format("%.2f",total));
+        totalCost.setText("Total" + " $" + String.format("%.2f", total));
     }
 
     // Inflate the menu that is used to add expenses to the list
@@ -95,7 +94,7 @@ public class ExpensesActivity extends AppCompatActivity {
 
                     }
                 });
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(ExpensesActivity.this,android.R.layout.simple_spinner_item,PetNames);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(ExpensesActivity.this, android.R.layout.simple_spinner_item, PetNames);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter);
 
@@ -110,13 +109,13 @@ public class ExpensesActivity extends AppCompatActivity {
                                 String detail = String.valueOf(expDetails.getText());
                                 String a = String.valueOf(expCost.getText());
                                 Double cost;
-                                if(!a.isEmpty()) {
+                                if (!a.isEmpty()) {
                                     cost = Double.parseDouble(expCost.getText().toString());
                                 } else {
                                     cost = 0.0;
                                 }
-                                String petName  = spinner.getSelectedItem().toString();
-                                if(title.isEmpty() || detail.isEmpty()) {
+                                String petName = spinner.getSelectedItem().toString();
+                                if (title.isEmpty() || detail.isEmpty()) {
                                     showToast();
                                 } else {
                                     dbHelper.insertNewExpense(title, detail, cost, petName);
@@ -124,17 +123,17 @@ public class ExpensesActivity extends AppCompatActivity {
                                 }
                             }
                         })
-                        .setNegativeButton("Cancel",null)
+                        .setNegativeButton("Cancel", null)
                         .create();
                 dialog.show();
-            return true;
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void DeleteTask(View view){
-        View parent = (View)view.getParent();
-        TextView taskTextView = (TextView)parent.findViewById(R.id.task_title);
+    public void DeleteTask(View view) {
+        View parent = (View) view.getParent();
+        TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
         String task = String.valueOf(taskTextView.getText());
         dbHelper.deleteExpense(task);
         loadExpenseList();

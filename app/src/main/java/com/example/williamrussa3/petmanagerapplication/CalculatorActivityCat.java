@@ -27,13 +27,13 @@ public class CalculatorActivityCat extends AppCompatActivity {
         calcBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ballLess.isChecked()) {
+                if (ballLess.isChecked()) {
                     outputTxt.setText(String.format("%.2f Calories per day", calcReq("neutered")));
-                } else if(intact.isChecked()) {
+                } else if (intact.isChecked()) {
                     outputTxt.setText(String.format("%.2f Calories per day", calcReq("intact")));
-                } else if(obeseProne.isChecked()) {
+                } else if (obeseProne.isChecked()) {
                     outputTxt.setText(String.format("%.2f Calories per day", calcReq("obese")));
-                } else if(weightLoss.isChecked()) {
+                } else if (weightLoss.isChecked()) {
                     outputTxt.setText(String.format("%.2f Calories per day", calcReq("weight-loss")));
                 } else {
                     outputTxt.setText("Select a dietary requirement.");
@@ -46,16 +46,16 @@ public class CalculatorActivityCat extends AppCompatActivity {
         double rer; // Resting energy requirements
         double der; // Daily enery requirements
         rer = 70 * Math.pow(mPet.GetWeight(), 0.75);
-        if(req == "neutered") {
+        if (req.equals("neutered")) {
             der = 1.2 * rer;
             return der;
-        } else if(req == "intact") {
+        } else if (req.equals("intact")) {
             der = 1.4 * rer;
             return der;
-        } else if(req == "obese") {
+        } else if (req.equals("obese")) {
             der = 1 * rer;
             return der;
-        } else if(req == "weight-loss") {
+        } else if (req.equals("weight-loss")) {
             der = 0.8 * rer;
             return der;
         } else {

@@ -2,7 +2,6 @@ package com.example.williamrussa3.petmanagerapplication;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -30,67 +29,67 @@ public class CalculatorActivityDog extends AppCompatActivity {
 
         final TextView outputTxt = (TextView) findViewById(R.id.output_txt);
 
-       calcBtn.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               if(puppyRb.isChecked()) {
-                   if(activeRB.isChecked()) {
-                       outputTxt.setText(String.format("%.2f Calories per day", calculateReq("puppy", "active")));
-                   } else if(workingRb.isChecked()) {
-                       outputTxt.setText(String.format("%.2f Calories per day", calculateReq("puppy", "working")));
-                   } else if(lazyRb.isChecked()) {
-                       outputTxt.setText(String.format("%.2f Calories per day", calculateReq("puppy", "lazy")));
-                   } else {
-                       outputTxt.setText("Select an activity level.");
-                   }
-               } else if(adultRb.isChecked()) {
-                   if(activeRB.isChecked()) {
-                       outputTxt.setText(String.format("%.2f Calories per day", calculateReq("adult", "active")));
-                   } else if(workingRb.isChecked()) {
-                       outputTxt.setText(String.format("%.2f Calories per day", calculateReq("adult", "working")));
-                   } else if(lazyRb.isChecked()) {
-                       outputTxt.setText(String.format("%.2f Calories per day", calculateReq("adult", "lazy")));
-                   } else {
-                       outputTxt.setText("Select an activity level.");
-                   }
-               } else if(seniorRb.isChecked()) {
-                   if (activeRB.isChecked()) {
-                       outputTxt.setText(String.format("%.2f Calories per day", calculateReq("senior", "active")));
-                   } else if (workingRb.isChecked()) {
-                       outputTxt.setText(String.format("%.2f Calories per day", calculateReq("senior", "working")));
-                   } else if (lazyRb.isChecked()) {
-                       outputTxt.setText(String.format("%.2f Calories per day", calculateReq("senior", "lazy")));
-                   } else {
-                       outputTxt.setText("Select an activity level.");
-                   }
-               } else {
-                   outputTxt.setText("Select an age.");
-               }
-           }
-       });
+        calcBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (puppyRb.isChecked()) {
+                    if (activeRB.isChecked()) {
+                        outputTxt.setText(String.format("%.2f Calories per day", calculateReq("puppy", "active")));
+                    } else if (workingRb.isChecked()) {
+                        outputTxt.setText(String.format("%.2f Calories per day", calculateReq("puppy", "working")));
+                    } else if (lazyRb.isChecked()) {
+                        outputTxt.setText(String.format("%.2f Calories per day", calculateReq("puppy", "lazy")));
+                    } else {
+                        outputTxt.setText("Select an activity level.");
+                    }
+                } else if (adultRb.isChecked()) {
+                    if (activeRB.isChecked()) {
+                        outputTxt.setText(String.format("%.2f Calories per day", calculateReq("adult", "active")));
+                    } else if (workingRb.isChecked()) {
+                        outputTxt.setText(String.format("%.2f Calories per day", calculateReq("adult", "working")));
+                    } else if (lazyRb.isChecked()) {
+                        outputTxt.setText(String.format("%.2f Calories per day", calculateReq("adult", "lazy")));
+                    } else {
+                        outputTxt.setText("Select an activity level.");
+                    }
+                } else if (seniorRb.isChecked()) {
+                    if (activeRB.isChecked()) {
+                        outputTxt.setText(String.format("%.2f Calories per day", calculateReq("senior", "active")));
+                    } else if (workingRb.isChecked()) {
+                        outputTxt.setText(String.format("%.2f Calories per day", calculateReq("senior", "working")));
+                    } else if (lazyRb.isChecked()) {
+                        outputTxt.setText(String.format("%.2f Calories per day", calculateReq("senior", "lazy")));
+                    } else {
+                        outputTxt.setText("Select an activity level.");
+                    }
+                } else {
+                    outputTxt.setText("Select an age.");
+                }
+            }
+        });
     }
 
     public double calculateReq(String age, String activity) {
         double maintainEnergyReq;
         double restingEnergyReq;
 
-        if(age == "puppy") {
+        if (age.equals("puppy")) {
             restingEnergyReq = 55 * Math.pow(mPet.GetWeight(), 0.75);
-        } else if(age == "adult") {
+        } else if (age.equals("adult")) {
             restingEnergyReq = 70 * Math.pow(mPet.GetWeight(), 0.75);
-        } else if(age == "senior") {
+        } else if (age.equals("senior")) {
             restingEnergyReq = 60 * Math.pow(mPet.GetWeight(), 0.75);
         } else {
             return 0;
         }
 
-        if(activity == "active") {
+        if (activity.equals("active")) {
             maintainEnergyReq = 1.7 * restingEnergyReq;
             return maintainEnergyReq;
-        } else if(activity == "working") {
+        } else if (activity.equals("working")) {
             maintainEnergyReq = 2 * restingEnergyReq;
             return maintainEnergyReq;
-        } else if(activity == "lazy") {
+        } else if (activity.equals("lazy")) {
             maintainEnergyReq = 1 * restingEnergyReq;
             return maintainEnergyReq;
         } else {

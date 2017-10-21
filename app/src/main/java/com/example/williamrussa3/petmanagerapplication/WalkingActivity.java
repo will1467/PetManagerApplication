@@ -42,8 +42,8 @@ public class WalkingActivity extends AppCompatActivity implements DialogInterfac
         setContentView(R.layout.activity_walking);
         mPet = getIntent().getParcelableExtra("pet_object");
         mPetIndex = getIntent().getIntExtra("pet_index",0);
-        MainActivity.PetList = getPetListFromPreferences();
-        mPet = MainActivity.PetList.get(mPetIndex);
+        MainActivity.mPetList = getPetListFromPreferences();
+        mPet = MainActivity.mPetList.get(mPetIndex);
         PopulateWalkingTimeList();
     }
 
@@ -51,8 +51,8 @@ public class WalkingActivity extends AppCompatActivity implements DialogInterfac
     protected void onStop(){
 
         super.onStop();
-        MainActivity.PetList.remove(mPetIndex);
-        MainActivity.PetList.add(mPet);
+        MainActivity.mPetList.remove(mPetIndex);
+        MainActivity.mPetList.add(mPet);
         SavePreferences();
     }
 
@@ -63,7 +63,7 @@ public class WalkingActivity extends AppCompatActivity implements DialogInterfac
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
 
         Gson gson = new Gson();
-        String json = gson.toJson(MainActivity.PetList);
+        String json = gson.toJson(MainActivity.mPetList);
         prefsEditor.putString("pet_array", json);
         prefsEditor.commit();
     }
@@ -197,7 +197,7 @@ public class WalkingActivity extends AppCompatActivity implements DialogInterfac
             calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
             calendar.set(Calendar.MINUTE, minute);
 
-            alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,alarmIntent);
+            alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,alarmIntent);
 
 
 
