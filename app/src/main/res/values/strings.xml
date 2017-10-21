@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">PetManagerApplication</string>
     <string name="action_settings">Settings</string>
+    <string name="calc_age">Age</string>
+    <string name="calc_activity">Activity</string>
+    <string name="calc_puppy">Puppy</string>
+    <string name="calc_adult">Adult</string>
+    <string name="calc_senior">Senior</string>
+    <string name="calc_active">Active</string>
+    <string name="calc_working">Working</string>
+    <string name="calc_lazy">Lazy</string>
+    <string name="calc_calc">Calculate Food Requirements</string>
+    <string name="calc_output">Amount of Food Required</string>
 </resources>

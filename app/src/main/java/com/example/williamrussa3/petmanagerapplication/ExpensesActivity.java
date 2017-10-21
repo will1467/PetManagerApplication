@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,21 +15,31 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExpensesActivity extends AppCompatActivity {
 
     DBHelper dbHelper;
     ArrayAdapter<String> itemsAdapter;
     ListView expListView;
-
+    ArrayList<String> PetNames = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expenses);
 
+        /*for(int i =0; i <MainActivity.PetList.size(); i++){
+            Pet pet = MainActivity.PetList.get(i);
+            PetNames.add(pet.GetName());
+        }*/
+
         dbHelper = new DBHelper(this);
         expListView = (ListView)findViewById(R.id.expenseList);
 
+
+        //Log.i("NAMES", PetNames.get(0));
+        //Log.i("NAMES", PetNames.get(1));
+        //Log.i("NAMES", PetNames.get(2));
         loadExpenseList();
     }
 
@@ -75,7 +86,7 @@ public class ExpensesActivity extends AppCompatActivity {
                                 String title = String.valueOf(expTitle.getText());
                                 String detail = String.valueOf(expDetails.getText());
                                 Double cost = Double.parseDouble(expCost.getText().toString());
-                                dbHelper.insertNewExpense(title, detail);
+                                dbHelper.insertNewExpense(title, detail, cost);
                                 loadExpenseList();
                             }
                         })
