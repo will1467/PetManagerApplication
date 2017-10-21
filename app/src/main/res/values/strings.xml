@@ -22,4 +22,23 @@
     <string name="dog_info">Use this calculator to work out the recommended daily calorie intake for
         your dog based off its weight. Different dogs have different dietary intakes so use the
         radio buttons to select the categories appropriate to your dog.</string>
+    <string name="exp_total">Total</string>
+    <string name="feed_time">Schedule Feeding Times</string>
+    <string name="new_time">Schedule New Feeding Time</string>
+    <string name="current_time">Current Feeding Times</string>
+    <string name="add_pet">Add Pet</string>
+    <string name="add_expense">Expense Log</string>
+    <string name="walk">Schedule Walking Times</string>
+    <string name="new_walk">Schedule New Walking Time</string>
+    <string name="curr_walk">Current Walking Times</string>
+    <string name="hTitle">Enter expense title</string>
+    <string name="hDetail">Enter expense details</string>
+    <string name="hCost">Enter expense cost</string>
+    <string name="hPet">Which pet is this expense for?</string>
+    <string name="sDets">Enter Pet Details</string>
+    <string name="sName">Name:</string>
+    <string name="sBreed">Breed:</string>
+    <string name="sWeight">Weight:</string>
+    <string name="sCat">Cat</string>
+    <string name="sDog">Dog</string>
 </resources>

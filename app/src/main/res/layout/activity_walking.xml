@@ -17,7 +17,7 @@
             android:id="@+id/walking_title"
             android:layout_width="wrap_content"
             android:layout_height="56dp"
-            android:text="Schedule Walking Times"
+            android:text="@string/walk"
             android:textAllCaps="false"
             android:textColor="@android:color/black"
             android:textSize="30sp"
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="showTimePicker"
-            android:text="Schedule New Walking Time"
+            android:text="@string/new_walk"
             android:textAllCaps="false" />
 
         <TextView
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="20dp"
-            android:text="Current Walking Times"
+            android:text="@string/curr_walk"
             android:textAllCaps="false"
             android:textColor="@android:color/black"
             android:textSize="25sp" />

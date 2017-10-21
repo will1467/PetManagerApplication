@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,9 +14,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ExpensesActivity extends AppCompatActivity {
 
@@ -100,8 +99,6 @@ public class ExpensesActivity extends AppCompatActivity {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter);
 
-
-
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Add New Expense")
                         .setMessage("What have you bought now?")
@@ -111,10 +108,20 @@ public class ExpensesActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 String title = String.valueOf(expTitle.getText());
                                 String detail = String.valueOf(expDetails.getText());
-                                Double cost = Double.parseDouble(expCost.getText().toString());
+                                String a = String.valueOf(expCost.getText());
+                                Double cost;
+                                if(!a.isEmpty()) {
+                                    cost = Double.parseDouble(expCost.getText().toString());
+                                } else {
+                                    cost = 0.0;
+                                }
                                 String petName  = spinner.getSelectedItem().toString();
-                                dbHelper.insertNewExpense(title, detail, cost,petName);
-                                loadExpenseList();
+                                if(title.isEmpty() || detail.isEmpty()) {
+                                    showToast();
+                                } else {
+                                    dbHelper.insertNewExpense(title, detail, cost, petName);
+                                    loadExpenseList();
+                                }
                             }
                         })
                         .setNegativeButton("Cancel",null)
@@ -131,5 +138,9 @@ public class ExpensesActivity extends AppCompatActivity {
         String task = String.valueOf(taskTextView.getText());
         dbHelper.deleteExpense(task);
         loadExpenseList();
+    }
+
+    public void showToast() {
+        Toast.makeText(this, "Enter all fields", Toast.LENGTH_LONG).show();
     }
 }
