@@ -22,6 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DB_TABLE="Log";
     public static final String DB_COLUMN_NAME = "ExpenseName";
     public static final String DB_COLUMN_DETAIL = "ExpenseDetail";
+    public static final String DB_COLUMN_PETNAME = "PetName";
     public static final String DB_COLUMN_COST = "ExpenseCost";
 
     /**
@@ -33,7 +34,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query =
-                String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT,%s TEXT NOT NULL,%s TEXT NOT NULL,%s TEXT NOT NULL);",DB_TABLE,DB_COLUMN_NAME,DB_COLUMN_DETAIL,DB_COLUMN_COST);
+                String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT,%s TEXT NOT NULL,%s TEXT NOT NULL,%s TEXT NOT NULL, %s TEXT NOT NULL);",DB_TABLE,DB_COLUMN_NAME,DB_COLUMN_DETAIL,DB_COLUMN_COST, DB_COLUMN_PETNAME);
         db.execSQL(query);
     }
 
@@ -53,12 +54,13 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertNewExpense(String title, String detail, double cost){
+    public void insertNewExpense(String title, String detail, double cost, String petName){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DB_COLUMN_NAME, title);
         values.put(DB_COLUMN_DETAIL, detail);
         values.put(DB_COLUMN_COST, cost);
+        values.put(DB_COLUMN_PETNAME,petName);
         db.insertWithOnConflict(DB_TABLE,null,values,SQLiteDatabase.CONFLICT_REPLACE);
         db.close();
     }
@@ -69,35 +71,56 @@ public class DBHelper extends SQLiteOpenHelper {
     public void deleteExpense(String exp){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String expenseEntry[] = exp.split("\n", 3); // [0] = Title | [1] = Detail | [2] = Cost
+        String expenseEntry[] = exp.split("\n", 4); // [0] = Title | [1] = Detail | [2] = Cost [3] = Pet Name
+        Log.e("Mssg",expenseEntry[0] + expenseEntry[1]+ expenseEntry[2] +expenseEntry[3]);
 
-        db.delete(DB_TABLE, DB_COLUMN_NAME + "=? AND " + DB_COLUMN_DETAIL + "=? AND " + DB_COLUMN_COST + "=?",
-                new String[]{expenseEntry[0], expenseEntry[1], expenseEntry[2]});
+        db.delete(DB_TABLE, DB_COLUMN_NAME + "=? AND " + DB_COLUMN_DETAIL + "=? AND " + DB_COLUMN_COST + "=? AND " + DB_COLUMN_PETNAME + "=?",
+            new String[]{expenseEntry[0], expenseEntry[1], expenseEntry[2], expenseEntry[3]});
         db.close();
-    }
+}
 
     // Query the DB to get the details and build an expense which is added to an ArrayList
     // Get the detail from the
     public ArrayList<String> getTaskList(){
         ArrayList<String> taskList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor1 = db.query(DB_TABLE,new String[]{DB_COLUMN_NAME},null,null,null,null,null);
-        Cursor cursor2 = db.query(DB_TABLE,new String[]{DB_COLUMN_DETAIL},null,null,null,null,null);
-        Cursor cursor3 = db.query(DB_TABLE,new String[]{DB_COLUMN_COST},null,null,null,null,null);
-        while(cursor1.moveToNext()){
-            cursor2.moveToNext();
-            cursor3.moveToNext();
-            int index1 = cursor1.getColumnIndex(DB_COLUMN_NAME);
-            int index2 = cursor2.getColumnIndex(DB_COLUMN_DETAIL);
-            int index3 = cursor3.getColumnIndex(DB_COLUMN_COST);
-            String s = cursor1.getString(index1) + '\n' + cursor2.getString(index2) + '\n' + cursor3.getString(index3);
-            //Log.i(TAG, s);
+        Cursor cursorName = db.query(DB_TABLE,new String[]{DB_COLUMN_NAME},null,null,null,null,null);
+        Cursor cursorDetails = db.query(DB_TABLE,new String[]{DB_COLUMN_DETAIL},null,null,null,null,null);
+        Cursor cursorCost = db.query(DB_TABLE,new String[]{DB_COLUMN_COST},null,null,null,null,null);
+        Cursor cursorPetName = db.query(DB_TABLE,new String[]{DB_COLUMN_PETNAME},null,null,null,null,null);
+        while(cursorName.moveToNext()){
+            cursorDetails.moveToNext();
+            cursorCost.moveToNext();
+            cursorPetName.moveToNext();
+            int indexName = cursorName.getColumnIndex(DB_COLUMN_NAME);
+            int indexDetails = cursorDetails.getColumnIndex(DB_COLUMN_DETAIL);
+            int indexCost = cursorCost.getColumnIndex(DB_COLUMN_COST);
+            int indexPetName = cursorPetName.getColumnIndex(DB_COLUMN_PETNAME);
+            String s = cursorName.getString(indexName) + '\n' + cursorDetails.getString(indexDetails) + '\n' +
+                    cursorCost.getString(indexCost) + "\n" + cursorPetName.getString(indexPetName);
             taskList.add(s);
         }
-        cursor1.close();
-        cursor2.close();
-        cursor3.close();
+        cursorName.close();
+        cursorDetails.close();
+        cursorCost.close();
+        cursorPetName.close();
         db.close();
         return taskList;
     }
+
+    public ArrayList<Double> getExpenseCost() {
+        ArrayList<Double> costList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(DB_TABLE, new String[]{DB_COLUMN_COST}, null, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            int index = cursor.getColumnIndex(DB_COLUMN_COST);
+            Double cost = cursor.getDouble(index);
+            costList.add(cost);
+        }
+        cursor.close();
+        db.close();
+        return costList;
+    }
+
 }

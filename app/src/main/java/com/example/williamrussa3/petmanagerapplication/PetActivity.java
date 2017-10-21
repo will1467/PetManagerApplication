@@ -39,7 +39,7 @@ public class PetActivity extends AppCompatActivity {
 
         TextView petInfo = (TextView) findViewById(R.id.petInfo);
 
-        petInfo.setText(" Name " + mPet.GetName() + "\n Breed: " + mPet.GetBreed() + "\n Weight: " + mPet.GetWeight() + "kg");
+        petInfo.setText(" Name: " + mPet.GetName() + "\n Breed: " + mPet.GetBreed() + "\n Weight: " + mPet.GetWeight() + "kg");
 
         CustomList adapter = new CustomList(PetActivity.this, imageCaptions, imageID);
         final ListView list=(ListView)findViewById(R.id.list);
@@ -61,6 +61,14 @@ public class PetActivity extends AppCompatActivity {
                 }
                 else if(textViewCapton.equals(imageCaptions[2])){
                     ActivityClass = CalculatorActivity.class;
+
+                    if(mPet.GetType().equals( "Dog")){
+                        //ActivityClass = CalculatorActivityDog.class;
+                    }
+                    else if(mPet.GetType().equals("Cat")){
+                        //ActivityClass = CalculatorActivityCat.class;
+                    }
+
                 }
                 else{
                     ActivityClass = ExpensesActivity.class;

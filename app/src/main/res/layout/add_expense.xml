@@ -32,4 +32,23 @@
         android:layout_marginBottom="16dp"
         android:inputType="numberDecimal"
         android:hint="Cost"/>
+
+    <TextView
+        android:id="@+id/pet_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="16dp"
+        android:text="Which Pet is this Expense For?"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        />
+
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

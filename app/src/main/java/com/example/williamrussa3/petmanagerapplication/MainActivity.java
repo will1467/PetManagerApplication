@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -37,6 +38,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -123,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
         final EditText mPetNameEditText = (EditText) customView.findViewById(R.id.petName);
         final EditText mPetBreedEditText = (EditText) customView.findViewById(R.id.petBreed);
         final EditText mPetWeightEditText = (EditText) customView.findViewById(R.id.petWeight);
+        final RadioButton mPetTypeDog = (RadioButton) customView.findViewById(R.id.radioButtonDog);
+        final RadioButton mPetTypeCat = (RadioButton) customView.findViewById(R.id.radioButtonCat);
 
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(customView)
@@ -131,7 +136,14 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if (mPetBreedEditText.getText() != null && mPetNameEditText.getText() != null && mPetWeightEditText.getText() != null) {
                             double mPetWeight = Double.parseDouble(mPetWeightEditText.getText().toString());
-                            Pet newPet = new Pet(mPetNameEditText.getText().toString(), mPetBreedEditText.getText().toString(),mPetWeight);
+                            String petType = "";
+                            if(mPetTypeCat.isChecked()){
+                                petType = "Cat";
+                            }
+                            else if(mPetTypeDog.isChecked()){
+                                petType = "Dog";
+                            }
+                            Pet newPet = new Pet(mPetNameEditText.getText().toString(), mPetBreedEditText.getText().toString(),mPetWeight,petType);
                             PetList.add(newPet);
                             PopulatePetList();
                             SavePreferences();
