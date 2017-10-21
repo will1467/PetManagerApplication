@@ -27,9 +27,9 @@
 
     <EditText
         android:id="@+id/petName"
-        android:layout_marginStart="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:ems="6"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -49,9 +49,9 @@
 
     <EditText
         android:id="@+id/petBreed"
-        android:layout_marginStart="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:ems="6"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -71,9 +71,9 @@
 
     <EditText
         android:id="@+id/petWeight"
-        android:layout_marginStart="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:ems="6"
         android:focusable="true"
         android:focusableInTouchMode="true"

@@ -9,8 +9,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import static android.content.ContentValues.TAG;
-
 public class DBHelper extends SQLiteOpenHelper {
 
     public DBHelper(Context context) {
@@ -20,10 +18,10 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "EXPENSE_LOG";
     private static final int DB_VER = 1;
     public static final String DB_TABLE = "Log";
-    public static final String DB_COLUMN_NAME = "ExpenseName";
-    public static final String DB_COLUMN_DETAIL = "ExpenseDetail";
-    public static final String DB_COLUMN_PETNAME = "PetName";
-    public static final String DB_COLUMN_COST = "ExpenseCost";
+    public static final String DB_COLUMN_NAME = "ExpenseName"; // Name/Title of purchase
+    public static final String DB_COLUMN_DETAIL = "ExpenseDetail"; // Description of purchase
+    public static final String DB_COLUMN_PETNAME = "PetName"; // Name of Pet purchase was for
+    public static final String DB_COLUMN_COST = "ExpenseCost"; // Cost of the purchase
 
     /**
      * Called when the DBHelper is created for the first time. This is where the
@@ -34,7 +32,9 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query =
-                String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT,%s TEXT NOT NULL,%s TEXT NOT NULL,%s TEXT NOT NULL, %s TEXT NOT NULL);", DB_TABLE, DB_COLUMN_NAME, DB_COLUMN_DETAIL, DB_COLUMN_COST, DB_COLUMN_PETNAME);
+                String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s TEXT NOT NULL,%s TEXT NOT NULL,%s TEXT NOT NULL, %s TEXT NOT NULL);",
+                        DB_TABLE, DB_COLUMN_NAME, DB_COLUMN_DETAIL, DB_COLUMN_COST, DB_COLUMN_PETNAME);
         db.execSQL(query);
     }
 
@@ -54,6 +54,14 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Used to insert a new expense into the database
+     * Self explanatory parameters
+     * @param title
+     * @param detail
+     * @param cost
+     * @param petName
+     */
     public void insertNewExpense(String title, String detail, double cost, String petName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -71,24 +79,29 @@ public class DBHelper extends SQLiteOpenHelper {
     public void deleteExpense(String exp) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String expenseEntry[] = exp.split("\n", 4); // [0] = Title | [1] = Detail | [2] = Cost [3] = Pet Name
+        String expenseEntry[] = exp.split("\n", 4); // [0] = Title | [1] = Detail | [2] = Cost | [3] = Pet Name
         Log.e("Mssg", expenseEntry[0] + expenseEntry[1] + expenseEntry[2] + expenseEntry[3]);
 
-        db.delete(DB_TABLE, DB_COLUMN_NAME + "=? AND " + DB_COLUMN_DETAIL + "=? AND " + DB_COLUMN_COST + "=? AND " + DB_COLUMN_PETNAME + "=?",
+        db.delete(DB_TABLE, DB_COLUMN_NAME + "=? AND " + DB_COLUMN_DETAIL + "=? AND " +
+                        DB_COLUMN_COST + "=? AND " + DB_COLUMN_PETNAME + "=?",
                 new String[]{expenseEntry[0], expenseEntry[1], expenseEntry[2], expenseEntry[3]});
         db.close();
     }
 
     // Query the DB to get the details and build an expense which is added to an ArrayList
     // Get the detail from the
-    public ArrayList<String> getTaskList() {
+    public ArrayList<String> getExpenseList() {
         ArrayList<String> taskList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursorName = db.query(DB_TABLE, new String[]{DB_COLUMN_NAME}, null, null, null, null, null);
-        Cursor cursorDetails = db.query(DB_TABLE, new String[]{DB_COLUMN_DETAIL}, null, null, null, null, null);
-        Cursor cursorCost = db.query(DB_TABLE, new String[]{DB_COLUMN_COST}, null, null, null, null, null);
-        Cursor cursorPetName = db.query(DB_TABLE, new String[]{DB_COLUMN_PETNAME}, null, null, null, null, null);
-        while (cursorName.moveToNext()) {
+        Cursor cursorName =
+                db.query(DB_TABLE, new String[]{DB_COLUMN_NAME}, null, null, null, null, null);
+        Cursor cursorDetails =
+                db.query(DB_TABLE, new String[]{DB_COLUMN_DETAIL}, null, null, null, null, null);
+        Cursor cursorCost =
+                db.query(DB_TABLE, new String[]{DB_COLUMN_COST}, null, null, null, null, null);
+        Cursor cursorPetName =
+                db.query(DB_TABLE, new String[]{DB_COLUMN_PETNAME}, null, null, null, null, null);
+        while(cursorName.moveToNext()) {
             cursorDetails.moveToNext();
             cursorCost.moveToNext();
             cursorPetName.moveToNext();
@@ -96,9 +109,10 @@ public class DBHelper extends SQLiteOpenHelper {
             int indexDetails = cursorDetails.getColumnIndex(DB_COLUMN_DETAIL);
             int indexCost = cursorCost.getColumnIndex(DB_COLUMN_COST);
             int indexPetName = cursorPetName.getColumnIndex(DB_COLUMN_PETNAME);
-            String s = cursorName.getString(indexName) + '\n' + cursorDetails.getString(indexDetails) + '\n' +
-                    cursorCost.getString(indexCost) + "\n" + cursorPetName.getString(indexPetName);
-            taskList.add(s);
+            String expenseString = cursorName.getString(indexName) + '\n' +
+                    cursorDetails.getString(indexDetails) + '\n' + cursorCost.getString(indexCost)
+                    + "\n" + cursorPetName.getString(indexPetName);
+            taskList.add(expenseString);
         }
         cursorName.close();
         cursorDetails.close();
@@ -108,6 +122,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return taskList;
     }
 
+    /**
+     * Function that gets all the costs from the database, used to calculate the cost of all the
+     * total cost of all the expenses
+     * @return an array list of all the costs
+     */
     public ArrayList<Double> getExpenseCost() {
         ArrayList<Double> costList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();

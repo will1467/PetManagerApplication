@@ -20,6 +20,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:background="@android:drawable/ic_delete"
-        android:onClick="DeleteTask" />
+        android:onClick="DeleteExpense" />
 
 </RelativeLayout>

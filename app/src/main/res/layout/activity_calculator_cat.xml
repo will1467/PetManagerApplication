@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.williamrussa3.petmanagerapplication.CalculatorActivityDog"
     android:orientation="vertical"
-    android:weightSum="1">
+    android:weightSum="1"
+    tools:context="com.example.williamrussa3.petmanagerapplication.CalculatorActivityDog">
 
     <TextView
         android:id="@+id/info_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/cat_info"
-        android:textColor="@android:color/black"
         android:textAlignment="center"
+        android:textColor="@android:color/black"
         android:textSize="15sp"
         android:textStyle="bold" />
 
@@ -25,44 +25,44 @@
 
         <RadioGroup
             android:id="@+id/radioGroup"
-            android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ReqTitle"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/black">
 
             <RadioButton
                 android:id="@+id/noballs_rb"
-                android:textColor="@android:color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/cat_neut" />
+                android:text="@string/cat_neut"
+                android:textColor="@android:color/black" />
 
             <RadioButton
                 android:id="@+id/intact_rb"
-                android:textColor="@android:color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/cat_intact" />
+                android:text="@string/cat_intact"
+                android:textColor="@android:color/black" />
 
             <RadioButton
                 android:id="@+id/obese_rb"
-                android:textColor="@android:color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/cat_obese" />
+                android:text="@string/cat_obese"
+                android:textColor="@android:color/black" />
 
             <RadioButton
                 android:id="@+id/fat_rb"
-                android:textColor="@android:color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/cat_fat" />
+                android:text="@string/cat_fat"
+                android:textColor="@android:color/black" />
 
         </RadioGroup>
 
@@ -70,15 +70,15 @@
             android:id="@+id/ReqTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="44dp"
             android:text="@string/cat_req"
             android:textAlignment="center"
+            android:textColor="@android:color/black"
             android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true" />
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
@@ -86,16 +86,16 @@
         android:id="@+id/cat_calc_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:text="@string/calc_calc" />
+        android:text="@string/calc_calc"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/cat_output_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/calc_output"
-        android:textColor="@android:color/black"
         android:textAlignment="textStart"
+        android:textColor="@android:color/black"
         android:textSize="30sp"
         android:textStyle="bold" />
 

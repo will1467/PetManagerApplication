@@ -19,6 +19,6 @@
         android:layout_marginTop="10dp"
         android:layout_alignParentEnd="true"
         android:background="@android:drawable/ic_delete"
-        android:onClick="DeleteTask" />
+        android:onClick="DeleteExpense" />
 
 </RelativeLayout>
